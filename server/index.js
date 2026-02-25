@@ -15,7 +15,7 @@ const PORT = process.env.PORT || 5000;
 const allowedOrigins = [
   "http://localhost:3000", // local React dev
   "http://localhost:5173", // local Vite dev
-  "nexus-biomedical-git-main-vatsalas-projects-9d1036a9.vercel.app", // production domain from .env
+  "https://nexus-biomedical.vercel.app", // production domain from .env
 ].filter(Boolean);
 
 app.use(
