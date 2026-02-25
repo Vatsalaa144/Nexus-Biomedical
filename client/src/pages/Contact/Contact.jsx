@@ -1,11 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./Contact.css";
-import {
-  FaUser,
-  FaPhone,
-  FaEnvelope,
-  FaMapMarkerAlt,
-} from "react-icons/fa";
+import { FaUser, FaPhone, FaEnvelope, FaMapMarkerAlt } from "react-icons/fa";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -15,11 +10,11 @@ const Contact = () => {
     message: "",
   });
 
-  const [status, setStatus]     = useState("idle");
+  const [status, setStatus] = useState("idle");
   const [errorMsg, setErrorMsg] = useState("");
 
   const contactCardsRef = useRef([]);
-  const formCardRef     = useRef(null);
+  const formCardRef = useRef(null);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -31,18 +26,19 @@ const Contact = () => {
     setErrorMsg("");
 
     try {
-     const response = await fetch(`${import.meta.env.VITE_API_URL}/api/contact`, {
-        method : "POST",
+      const API_BASE = import.meta.env.VITE_API_URL; // or VITE_API_URL if you used that name
+
+      const response = await fetch(`${API_BASE}/api/contact`, {
+        method: "POST",
         headers: { "Content-Type": "application/json" },
-        body   : JSON.stringify({
-          name    : formData.name,
-          email   : formData.email,
-          phone   : formData.phone,
-          message : formData.message,
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          message: formData.message,
           honeypot: "",
         }),
       });
-
       const data = await response.json();
 
       if (response.ok && data.success) {
@@ -52,11 +48,10 @@ const Contact = () => {
         setStatus("error");
         setErrorMsg(data.error || "Something went wrong. Please try again.");
       }
-
     } catch (err) {
       setStatus("error");
       setErrorMsg(
-        "Cannot connect to server. Please try again or email us directly at nexusbiomedicalresearch@gmail.com"
+        "Cannot connect to server. Please try again or email us directly at nexusbiomedicalresearch@gmail.com",
       );
     }
   };
@@ -70,7 +65,7 @@ const Contact = () => {
           }
         });
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
 
     [
@@ -89,7 +84,9 @@ const Contact = () => {
       <div className="contact-page-title">
         <div className="container">
           <h1>Contact Us</h1>
-          <p>Get in touch with the Nexus Biomedical Research Foundation Trust</p>
+          <p>
+            Get in touch with the Nexus Biomedical Research Foundation Trust
+          </p>
         </div>
       </div>
 
@@ -111,21 +108,32 @@ const Contact = () => {
                     <FaUser className="contact-person-icon" />
                     <div className="contact-person-details">
                       <h3>Dr. Pradeep Kumar Yadav</h3>
-                      <p className="contact-person-title">Assistant Professor</p>
+                      <p className="contact-person-title">
+                        Assistant Professor
+                      </p>
                     </div>
                   </div>
                   <div className="contact-info">
                     <div className="contact-info-item">
                       <FaMapMarkerAlt className="contact-info-icon" />
                       <div className="contact-info-content">
-                        <p>Office Add- 151, Sector- J Pocket-2, Sushant Golf City, Lucknow.</p>
-                        <p>PO: Sushant Golf City, DIST: Lucknow, Uttar Pradesh, 226030</p>
+                        <p>
+                          Office Add- 151, Sector- J Pocket-2, Sushant Golf
+                          City, Lucknow.
+                        </p>
+                        <p>
+                          PO: Sushant Golf City, DIST: Lucknow, Uttar Pradesh,
+                          226030
+                        </p>
                       </div>
                     </div>
-                   
+
                     <div className="contact-info-item">
                       <FaEnvelope className="contact-info-icon" />
-                      <a href="https://mail.google.com/mail/u/0/?view=cm&fs=1&tf=1&to=nexusbiomedicalresearch@gmail.com" className="contact-link">
+                      <a
+                        href="https://mail.google.com/mail/u/0/?view=cm&fs=1&tf=1&to=nexusbiomedicalresearch@gmail.com"
+                        className="contact-link"
+                      >
                         nexusbiomedicalresearch@gmail.com
                       </a>
                     </div>
@@ -145,21 +153,32 @@ const Contact = () => {
                     <FaUser className="contact-person-icon" />
                     <div className="contact-person-details">
                       <h3>Mr. Sachin Kumar Tripathi</h3>
-                      <p className="contact-person-title">Scientific Officer Toxicology</p>
+                      <p className="contact-person-title">
+                        Scientific Officer Toxicology
+                      </p>
                     </div>
                   </div>
                   <div className="contact-info">
                     <div className="contact-info-item">
                       <FaMapMarkerAlt className="contact-info-icon" />
                       <div className="contact-info-content">
-                        <p>Office Add- 151, Sector- J Pocket-2, Sushant Golf City, Lucknow.</p>
-                        <p>PO: Sushant Golf City, DIST: Lucknow, Uttar Pradesh, 226030</p>
+                        <p>
+                          Office Add- 151, Sector- J Pocket-2, Sushant Golf
+                          City, Lucknow.
+                        </p>
+                        <p>
+                          PO: Sushant Golf City, DIST: Lucknow, Uttar Pradesh,
+                          226030
+                        </p>
                       </div>
                     </div>
-                    
+
                     <div className="contact-info-item">
                       <FaEnvelope className="contact-info-icon" />
-                      <a href="https://mail.google.com/mail/u/0/?view=cm&fs=1&tf=1&to=nexusbiomedicalresearch@gmail.com" className="contact-link">
+                      <a
+                        href="https://mail.google.com/mail/u/0/?view=cm&fs=1&tf=1&to=nexusbiomedicalresearch@gmail.com"
+                        className="contact-link"
+                      >
                         nexusbiomedicalresearch@gmail.com
                       </a>
                     </div>
@@ -175,7 +194,6 @@ const Contact = () => {
             </div>
 
             <form className="contact-form" onSubmit={handleSubmit}>
-
               <input
                 type="text"
                 name="honeypot"
@@ -258,28 +276,39 @@ const Contact = () => {
               </button>
 
               {status === "success" && (
-                <div style={{
-                  marginTop:"14px", padding:"12px 16px",
-                  background:"#f0fff4", border:"1px solid #68d391",
-                  borderRadius:"6px", color:"#276749",
-                  fontSize:"0.9rem", lineHeight:"1.5",
-                }}>
-                  ✅ Message sent successfully! We'll get back to you within
-                  2–3 business days. Check your email for a confirmation.
+                <div
+                  style={{
+                    marginTop: "14px",
+                    padding: "12px 16px",
+                    background: "#f0fff4",
+                    border: "1px solid #68d391",
+                    borderRadius: "6px",
+                    color: "#276749",
+                    fontSize: "0.9rem",
+                    lineHeight: "1.5",
+                  }}
+                >
+                  ✅ Message sent successfully! We'll get back to you within 2–3
+                  business days. Check your email for a confirmation.
                 </div>
               )}
 
               {status === "error" && (
-                <div style={{
-                  marginTop:"14px", padding:"12px 16px",
-                  background:"#fff5f5", border:"1px solid #fc8181",
-                  borderRadius:"6px", color:"#c53030",
-                  fontSize:"0.9rem", lineHeight:"1.5",
-                }}>
+                <div
+                  style={{
+                    marginTop: "14px",
+                    padding: "12px 16px",
+                    background: "#fff5f5",
+                    border: "1px solid #fc8181",
+                    borderRadius: "6px",
+                    color: "#c53030",
+                    fontSize: "0.9rem",
+                    lineHeight: "1.5",
+                  }}
+                >
                   ❌ {errorMsg}
                 </div>
               )}
-
             </form>
           </div>
         </div>
