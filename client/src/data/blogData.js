@@ -30,7 +30,7 @@ const blogData = [
     image: image1,
   },
   {
-    id: 1,
+    id: 2,
     title: "Toxicology Education: Modern and Transformative Approaches",
     slug: "toxicology-education-modern-transformative-approaches",
     excerpt:
@@ -59,7 +59,7 @@ const blogData = [
     image: image2,
   },
   {
-    id: 2,
+    id: 3,
     title:
       "Revolutionizing Toxicity Assessment: High-Throughput and Advanced Analytical Methods",
     slug: "revolutionizing-toxicity-assessment-high-throughput-advanced-analytical-methods",
@@ -89,7 +89,7 @@ const blogData = [
     image: image3,
   },
   {
-    id: 3,
+    id: 4,
     title:
       "The Golden Hour: Advancing Early Sepsis Detection in the Emergency Department with Biomarkers and Predictive Analytics",
     slug: "early-sepsis-detection-emergency-department-biomarkers-predictive-analytics",
@@ -116,7 +116,7 @@ const blogData = [
     image: image4,
   },
   {
-    id: 4,
+    id: 5,
     title:
       "The Gut-Brain Axis in Pediatric Health: Unraveling the Microbiome's Role in Infection and Neurodevelopment",
     slug: "gut-brain-axis-microbiome-pediatric-infection-neurodevelopment",
@@ -140,7 +140,7 @@ const blogData = [
     image: image5,
   },
   {
-    id: 5,
+    id: 6,
     title:
       "Revolutionizing Endodontics: Modern Biomaterials and Minimally Invasive Techniques for Vital Pulp Therapy",
     slug: "modern-biomaterials-minimally-invasive-vital-pulp-therapy-endodontics",

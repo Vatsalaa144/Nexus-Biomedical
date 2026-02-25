@@ -6,7 +6,6 @@ import {
   FaLinkedinIn,
   FaYoutube,
   FaEnvelope,
-  FaPhone,
   FaMapMarkerAlt,
 } from "react-icons/fa";
 import "./Footer.css";
@@ -125,17 +124,10 @@ const Footer = () => {
                 <div className="contact-item">
                   <FaEnvelope className="contact-icon" />
                   <div>
-                    <a href="mailto:secretary@insoctox.org">
-                      secretary@insoctox.org
+                    <a href="https://mail.google.com/mail/u/0/?view=cm&fs=1&tf=1&to=nexusbiomedicalresearch@gmail.com" >
+                        
+                      nexusbiomedicalresearch@gmail.com
                     </a>
-                    <br />
-                    <a href="mailto:info@insoctox.org">info@insoctox.org</a>
-                  </div>
-                </div>
-                <div className="contact-item">
-                  <FaPhone className="contact-icon" />
-                  <div>
-                    <a href="tel:+914027143000">+91 8881778519</a>
                   </div>
                 </div>
               </div>

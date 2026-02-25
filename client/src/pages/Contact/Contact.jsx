@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import "./Contact.css";
 import {
   FaUser,
-  FaBuilding,
   FaPhone,
   FaEnvelope,
   FaMapMarkerAlt,
@@ -13,25 +12,55 @@ const Contact = () => {
     name: "",
     email: "",
     phone: "",
-    subject: "",
     message: "",
   });
 
+  const [status, setStatus]     = useState("idle");
+  const [errorMsg, setErrorMsg] = useState("");
+
   const contactCardsRef = useRef([]);
-  const formCardRef = useRef(null);
-  const mapRef = useRef(null);
+  const formCardRef     = useRef(null);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    alert("Thank you for your message. We'll get back to you soon.");
+    setStatus("sending");
+    setErrorMsg("");
+
+    try {
+     const response = await fetch(`${import.meta.env.VITE_API_URL}/api/contact`, {
+        method : "POST",
+        headers: { "Content-Type": "application/json" },
+        body   : JSON.stringify({
+          name    : formData.name,
+          email   : formData.email,
+          phone   : formData.phone,
+          message : formData.message,
+          honeypot: "",
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        setStatus("success");
+        setFormData({ name: "", email: "", phone: "", message: "" });
+      } else {
+        setStatus("error");
+        setErrorMsg(data.error || "Something went wrong. Please try again.");
+      }
+
+    } catch (err) {
+      setStatus("error");
+      setErrorMsg(
+        "Cannot connect to server. Please try again or email us directly at nexusbiomedicalresearch@gmail.com"
+      );
+    }
   };
 
-  // Scroll animation observer
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -48,7 +77,6 @@ const Contact = () => {
       contactCardsRef.current[0],
       contactCardsRef.current[1],
       formCardRef.current,
-      mapRef.current,
     ].forEach((ref) => {
       if (ref) observer.observe(ref);
     });
@@ -61,19 +89,16 @@ const Contact = () => {
       <div className="contact-page-title">
         <div className="container">
           <h1>Contact Us</h1>
-          <p>
-            Get in touch with the Nexus Biomedical Research Foundation Trust
-          </p>
+          <p>Get in touch with the Nexus Biomedical Research Foundation Trust</p>
         </div>
       </div>
 
       <div className="container">
-        {/* Main Contact Content - Three Column Layout (2 Cards + Form) */}
         <div className="contact-main-container">
-          {/* First Card: Executive Headquarters */}
           <div className="contact-cards-container">
             <div className="contact-main-content">
               <h2>Contact Info</h2>
+
               <div
                 className="contact-card contact-executive-card"
                 ref={(el) => (contactCardsRef.current[0] = el)}
@@ -81,54 +106,33 @@ const Contact = () => {
                 <div className="contact-card-header">
                   <h2>Secretary</h2>
                 </div>
-
                 <div className="contact-card-content">
                   <div className="contact-person">
                     <FaUser className="contact-person-icon" />
                     <div className="contact-person-details">
                       <h3>Dr. Pradeep Kumar Yadav</h3>
-                      <p className="contact-person-title">
-                        Assistant Professor
-                      </p>
+                      <p className="contact-person-title">Assistant Professor</p>
                     </div>
                   </div>
-
                   <div className="contact-info">
                     <div className="contact-info-item">
                       <FaMapMarkerAlt className="contact-info-icon" />
                       <div className="contact-info-content">
-                        <p>
-                          Office Add- 151, Sector- J Pocket-2, Sushant Golf
-                          City, Lucknow.
-                        </p>
-                        <p>
-                          PO: Sushant Golf City, DIST: Lucknow, Uttar Pradesh,
-                          226030
-                        </p>
+                        <p>Office Add- 151, Sector- J Pocket-2, Sushant Golf City, Lucknow.</p>
+                        <p>PO: Sushant Golf City, DIST: Lucknow, Uttar Pradesh, 226030</p>
                       </div>
                     </div>
-
-                    <div className="contact-info-item">
-                      <FaPhone className="contact-info-icon" />
-                      <a href="tel:+918881778519" className="contact-link">
-                        +91 8881778519
-                      </a>
-                    </div>
-
+                   
                     <div className="contact-info-item">
                       <FaEnvelope className="contact-info-icon" />
-                      <a
-                        href="mailto:drnishatsheikh@gmail.com"
-                        className="contact-link"
-                      >
-                        drnishatsheikh@gmail.com
+                      <a href="https://mail.google.com/mail/u/0/?view=cm&fs=1&tf=1&to=nexusbiomedicalresearch@gmail.com" className="contact-link">
+                        nexusbiomedicalresearch@gmail.com
                       </a>
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* Second Card: Editorial Headquarters */}
               <div
                 className="contact-card contact-editorial-card"
                 ref={(el) => (contactCardsRef.current[1] = el)}
@@ -136,47 +140,27 @@ const Contact = () => {
                 <div className="contact-card-header">
                   <h2>Treasurer</h2>
                 </div>
-
                 <div className="contact-card-content">
                   <div className="contact-person">
                     <FaUser className="contact-person-icon" />
                     <div className="contact-person-details">
                       <h3>Mr. Sachin Kumar Tripathi</h3>
-                      <p className="contact-person-title">
-                        Scientific Officer Toxicology
-                      </p>
+                      <p className="contact-person-title">Scientific Officer Toxicology</p>
                     </div>
                   </div>
-
                   <div className="contact-info">
                     <div className="contact-info-item">
                       <FaMapMarkerAlt className="contact-info-icon" />
                       <div className="contact-info-content">
-                        <p>
-                          Office Add- 151, Sector- J Pocket-2, Sushant Golf
-                          City, Lucknow.
-                        </p>
-                        <p>
-                          PO: Sushant Golf City, DIST: Lucknow, Uttar Pradesh,
-                          226030
-                        </p>
+                        <p>Office Add- 151, Sector- J Pocket-2, Sushant Golf City, Lucknow.</p>
+                        <p>PO: Sushant Golf City, DIST: Lucknow, Uttar Pradesh, 226030</p>
                       </div>
                     </div>
-
-                    <div className="contact-info-item">
-                      <FaPhone className="contact-info-icon" />
-                      <a href="tel:+918881778519" className="contact-link">
-                        +91 8881778519
-                      </a>
-                    </div>
-
+                    
                     <div className="contact-info-item">
                       <FaEnvelope className="contact-info-icon" />
-                      <a
-                        href="mailto:dranandmdfm@gmail.com"
-                        className="contact-link"
-                      >
-                        dranandmdfm@gmail.com
+                      <a href="https://mail.google.com/mail/u/0/?view=cm&fs=1&tf=1&to=nexusbiomedicalresearch@gmail.com" className="contact-link">
+                        nexusbiomedicalresearch@gmail.com
                       </a>
                     </div>
                   </div>
@@ -185,13 +169,22 @@ const Contact = () => {
             </div>
           </div>
 
-          {/* Contact Form Column */}
           <div className="contact-form-column" ref={formCardRef}>
             <div className="contact-form-header">
               <h2>Send us a message</h2>
             </div>
 
             <form className="contact-form" onSubmit={handleSubmit}>
+
+              <input
+                type="text"
+                name="honeypot"
+                style={{ display: "none" }}
+                tabIndex="-1"
+                autoComplete="off"
+                aria-hidden="true"
+              />
+
               <div className="contact-form-group">
                 <label htmlFor="name">Name *</label>
                 <div className="contact-input-container">
@@ -203,6 +196,7 @@ const Contact = () => {
                     onChange={handleChange}
                     required
                     placeholder="Enter your full name"
+                    disabled={status === "sending"}
                   />
                 </div>
               </div>
@@ -218,6 +212,7 @@ const Contact = () => {
                     onChange={handleChange}
                     required
                     placeholder="Enter your email address"
+                    disabled={status === "sending"}
                   />
                 </div>
               </div>
@@ -232,6 +227,7 @@ const Contact = () => {
                     value={formData.phone}
                     onChange={handleChange}
                     placeholder="Enter your phone number"
+                    disabled={status === "sending"}
                   />
                 </div>
               </div>
@@ -247,17 +243,43 @@ const Contact = () => {
                     onChange={handleChange}
                     required
                     placeholder="Write your message here..."
+                    disabled={status === "sending"}
                   ></textarea>
                 </div>
               </div>
 
-              <div className="contact-form-divider">
-                <span className="divider-text">---</span>
-              </div>
-
-              <button type="submit" className="contact-submit-btn">
-                Send Message
+              <button
+                type="submit"
+                className="contact-submit-btn"
+                disabled={status === "sending"}
+                style={{ opacity: status === "sending" ? 0.7 : 1 }}
+              >
+                {status === "sending" ? "Sending..." : "SEND MESSAGE"}
               </button>
+
+              {status === "success" && (
+                <div style={{
+                  marginTop:"14px", padding:"12px 16px",
+                  background:"#f0fff4", border:"1px solid #68d391",
+                  borderRadius:"6px", color:"#276749",
+                  fontSize:"0.9rem", lineHeight:"1.5",
+                }}>
+                  ✅ Message sent successfully! We'll get back to you within
+                  2–3 business days. Check your email for a confirmation.
+                </div>
+              )}
+
+              {status === "error" && (
+                <div style={{
+                  marginTop:"14px", padding:"12px 16px",
+                  background:"#fff5f5", border:"1px solid #fc8181",
+                  borderRadius:"6px", color:"#c53030",
+                  fontSize:"0.9rem", lineHeight:"1.5",
+                }}>
+                  ❌ {errorMsg}
+                </div>
+              )}
+
             </form>
           </div>
         </div>
