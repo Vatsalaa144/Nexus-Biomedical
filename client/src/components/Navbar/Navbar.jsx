@@ -49,6 +49,7 @@ const Navbar = () => {
       </div>
 
       {/* Navigation Links Section */}
+
       <div className="navbar-links">
         <div className="links-container">
           {/* Desktop Navigation */}
@@ -76,6 +77,14 @@ const Navbar = () => {
                 >
                   JAIRAM Journal
                 </a>
+              </li>
+              <li className="nav-item nav-item-dropdown">
+                <Link
+                  to="/membership"
+                  className={`nav-link ${location.pathname.startsWith("/membership") ? "active" : ""}`}
+                >
+                  MEMBERSHIP
+                </Link>
               </li>
             </ul>
           </div>

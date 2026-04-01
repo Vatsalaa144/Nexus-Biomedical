@@ -1,0 +1,383 @@
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700;900&family=DM+Sans:wght@300;400;500;600&display=swap");
+
+:root {
+  --primary: #2c5f8d;
+  --primary-dark: #1a3a52;
+  --accent: #4a90c5;
+  --lifetime-primary: #1a4a2e;
+  --lifetime-accent: #2d7a4f;
+  --gold: #c9993a;
+  --text-dark: #1a1a2e;
+  --text-mid: #4a4a6a;
+  --text-light: #8888aa;
+  --border: #e0e6ef;
+  --bg: #f4f7fb;
+}
+
+.ml-page {
+  font-family: "DM Sans", sans-serif;
+  background: var(--bg);
+  min-height: 100vh;
+}
+
+/* ── Hero ── */
+.ml-hero {
+  position: relative;
+  background: linear-gradient(135deg, #0d1f33 0%, #1a3a5c 50%, #2c5f8d 100%);
+  color: white;
+  text-align: center;
+  padding: 90px 20px 80px;
+  overflow: hidden;
+}
+.ml-hero-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      ellipse at 20% 50%,
+      rgba(74, 144, 197, 0.15) 0%,
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse at 80% 20%,
+      rgba(44, 95, 141, 0.2) 0%,
+      transparent 50%
+    );
+  pointer-events: none;
+}
+.ml-hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 760px;
+  margin: 0 auto;
+}
+.ml-hero-tag {
+  display: inline-block;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 5px 18px;
+  border-radius: 30px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 22px;
+  opacity: 0.85;
+}
+.ml-hero-title {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 4.5rem;
+  font-weight: 900;
+  margin: 0 0 10px;
+  letter-spacing: 4px;
+  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+}
+.ml-hero-sub {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0 0 16px;
+  opacity: 0.95;
+}
+.ml-hero-desc {
+  font-size: 1rem;
+  font-weight: 300;
+  line-height: 1.8;
+  opacity: 0.85;
+  margin: 0;
+}
+
+/* ── Body ── */
+.ml-body {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 60px 24px 80px;
+}
+
+/* ── Section Label ── */
+.ml-section {
+  margin-bottom: 60px;
+}
+.ml-section-label {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 28px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--border);
+  letter-spacing: 0.3px;
+}
+
+/* ── Cards ── */
+.ml-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+.ml-card {
+  background: white;
+  border-radius: 16px;
+  padding: 36px 32px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+  border: 1.5px solid var(--border);
+}
+.ml-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+}
+.annual-card {
+  border-top: 4px solid var(--primary);
+}
+.lifetime-card {
+  border-top: 4px solid var(--lifetime-accent);
+}
+.ml-card-badge {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  background: var(--lifetime-accent);
+  color: white;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 20px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.ml-card-icon {
+  font-size: 2.2rem;
+  margin-bottom: 14px;
+}
+.ml-card h3 {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin: 0 0 12px;
+}
+.ml-card-price {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.lifetime-card .ml-card-price {
+  color: var(--lifetime-accent);
+}
+.ml-card-meta {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-light);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 16px;
+}
+.ml-card p {
+  font-size: 0.92rem;
+  color: var(--text-mid);
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* ── Benefits ── */
+.ml-benefits-section {
+}
+.ml-benefits-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.ml-benefit-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: white;
+  border-radius: 10px;
+  padding: 14px 18px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  font-size: 0.92rem;
+  color: var(--text-mid);
+  line-height: 1.5;
+  animation: fadeUp 0.4s ease both;
+  border-left: 3px solid var(--accent);
+}
+.ml-benefit-check {
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 1rem;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Eligibility ── */
+.ml-eligibility-section {
+}
+.ml-eligibility-text {
+  background: white;
+  border-radius: 12px;
+  padding: 28px 32px;
+  font-size: 1rem;
+  color: var(--text-mid);
+  line-height: 1.8;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  border-left: 4px solid var(--gold);
+  margin: 0;
+}
+
+/* ── CTA ── */
+.ml-cta-section {
+  text-align: center;
+  background: linear-gradient(135deg, #1a3a5c, #2c5f8d);
+  border-radius: 20px;
+  padding: 60px 40px;
+  box-shadow: 0 10px 40px rgba(44, 95, 141, 0.25);
+}
+.ml-cta-title {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: white;
+  margin: 0 0 12px;
+}
+.ml-cta-sub {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0 0 36px;
+}
+
+/* Apply Button + Dropdown */
+.ml-apply-wrapper {
+  position: relative;
+  display: inline-block;
+}
+.ml-apply-btn {
+  display: inline-block;
+  padding: 16px 44px;
+  background: white;
+  color: var(--primary);
+  border: none;
+  border-radius: 10px;
+  font-family: "DM Sans", sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  letter-spacing: 0.3px;
+}
+.ml-apply-btn:hover {
+  background: #f0f6ff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.2);
+}
+.ml-apply-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  border-radius: 14px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+  min-width: 300px;
+  overflow: hidden;
+  z-index: 100;
+  animation: dropIn 0.2s ease;
+}
+@keyframes dropIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+.ml-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  padding: 18px 22px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.2s ease;
+  border-bottom: 1px solid var(--border);
+}
+.ml-dropdown-item:last-child {
+  border-bottom: none;
+}
+.annual-item:hover {
+  background: #eef5fb;
+}
+.lifetime-item:hover {
+  background: #edf7f1;
+}
+.ml-drop-icon {
+  font-size: 1.8rem;
+  flex-shrink: 0;
+}
+.ml-drop-title {
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 3px;
+}
+.annual-item .ml-drop-title {
+  color: var(--primary);
+}
+.lifetime-item .ml-drop-title {
+  color: var(--lifetime-primary);
+}
+.ml-drop-meta {
+  font-size: 0.78rem;
+  color: var(--text-light);
+  font-weight: 500;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .ml-hero-title {
+    font-size: 3rem;
+  }
+  .ml-cards {
+    grid-template-columns: 1fr;
+  }
+  .ml-benefits-grid {
+    grid-template-columns: 1fr;
+  }
+  .ml-cta-section {
+    padding: 40px 24px;
+  }
+  .ml-apply-dropdown {
+    min-width: 260px;
+  }
+}
+@media (max-width: 480px) {
+  .ml-hero-title {
+    font-size: 2.4rem;
+  }
+  .ml-hero {
+    padding: 70px 16px 60px;
+  }
+  .ml-body {
+    padding: 40px 16px 60px;
+  }
+}
