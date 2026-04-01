@@ -1,19 +1,35 @@
-const express = require("express");
-const cors = require("cors");
+const express  = require("express");
+const cors     = require("cors");
+const mongoose = require("mongoose");
 require("dotenv").config();
 
-const emailRoute = require("./routes/email");
+const emailRoute      = require("./routes/email");
+const membershipRoute = require("./routes/membership");           // ← NEW
+
+const { startRenewalScheduler } = require("./utils/renewalScheduler"); // ← NEW
 
 const app = express();
 app.set('trust proxy', 1);
 const PORT = process.env.PORT || 5000;
+
+// ── MongoDB ───────────────────────────────────────────────────────────────────
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => {
+    console.log("✅ MongoDB connected");
+    startRenewalScheduler();                                       // ← NEW
+  })
+  .catch((err) => {
+    console.error("❌ MongoDB connection failed:", err.message);
+    process.exit(1);
+  });
 
 // ── CORS ──────────────────────────────────────────────────────────────────────
 // Controls which domains can talk to your backend
 // In development: allows localhost:3000 (your React app)
 // In production:  allows only your real domain
 const allowedOrigins = [
-  "http://localhost:3000", // local React dev
+  "http://localhost:5000", // local React dev
   "http://localhost:5173", // local Vite dev
   "https://nexus-biomedical.vercel.app", // production domain from .env
 ].filter(Boolean);
@@ -30,7 +46,7 @@ app.use(
 
       return callback(new Error(`CORS blocked: ${origin} is not allowed`));
     },
-    methods: ["POST", "OPTIONS"],
+    methods: ["GET", "POST", "OPTIONS"],                          // ← added GET
     allowedHeaders: ["Content-Type"],
   }),
 );
@@ -38,9 +54,13 @@ app.use(
 // ── Body Parser ───────────────────────────────────────────────────────────────
 // Allows Express to read JSON from request body
 app.use(express.json({ limit: "10kb" })); // max 10kb to prevent large payloads
+app.use(express.urlencoded({ extended: true }));                  // ← NEW (needed for multipart form fields)
 
 // ── Routes ────────────────────────────────────────────────────────────────────
+app.use("/uploads", express.static("uploads"));
+
 app.use("/api", emailRoute);
+app.use("/api/membership", membershipRoute);                      // ← NEW
 
 // ── Health Check ──────────────────────────────────────────────────────────────
 // Simple route to verify server is running
