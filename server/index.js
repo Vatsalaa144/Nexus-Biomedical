@@ -29,24 +29,21 @@ mongoose
 // In development: allows localhost:3000 (your React app)
 // In production:  allows only your real domain
 const allowedOrigins = [
-  "http://localhost:5000", // local React dev
-  "http://localhost:5173", // local Vite dev
-  "https://nexus-biomedical.vercel.app", // production domain from .env
+  "http://localhost:3000",
+  "http://localhost:5173",
+  "https://nexus-biomedical.vercel.app",
+  "https://nexus-biomedical.onrender.com",
 ].filter(Boolean);
 
 app.use(
   cors({
     origin: (origin, callback) => {
-      // Allow requests with no origin (Postman, mobile apps)
       if (!origin) return callback(null, true);
-
-      if (allowedOrigins.includes(origin)) {
-        return callback(null, true);
-      }
-
+      if (allowedOrigins.includes(origin)) return callback(null, true);
+      if (origin === process.env.SERVER_URL) return callback(null, true);
       return callback(new Error(`CORS blocked: ${origin} is not allowed`));
     },
-    methods: ["GET", "POST", "OPTIONS"],                          // ← added GET
+    methods: ["GET", "POST", "OPTIONS"],
     allowedHeaders: ["Content-Type"],
   }),
 );
