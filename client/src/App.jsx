@@ -8,8 +8,8 @@ import BlogPage from "./pages/BlogPage/BlogPage";
 import BlogPostPage from "./pages/BlogPostPage/BlogPostPage";
 import Committee from "./pages/Committee/Committee";
 import Contact from "./pages/Contact/Contact";
-import AnnualMembership from "./pages/Membership/AnnualMembership";
-import LifetimeMembership from "./pages/Membership/LifetimeMembership";
+import AnnualMembership from "./pages/Membership/Annualmembership";
+import LifetimeMembership from "./pages/Membership/Lifetimemembership";
 import MembershipLanding from "./pages/Membership/MembershipLanding";
 
 function ScrollToTop() {
