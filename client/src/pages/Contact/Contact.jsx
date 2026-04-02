@@ -28,7 +28,7 @@ const Contact = () => {
     try {
       const API_BASE = import.meta.env.VITE_API_URL; // or VITE_API_URL if you used that name
 
-      const response = await fetch(`${API_BASE}/api/contact`, {
+      const response = await fetch(`${API_BASE}/contact`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
