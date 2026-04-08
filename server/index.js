@@ -32,7 +32,7 @@ const allowedOrigins = [
   "http://localhost:3000",
   "http://localhost:5173",
   "https://nexus-biomedical.vercel.app",
-  "https://nexus-biomedical.onrender.com",
+  
 ].filter(Boolean);
 
 app.use(
