@@ -29,10 +29,8 @@ mongoose
 // In development: allows localhost:3000 (your React app)
 // In production:  allows only your real domain
 const allowedOrigins = [
-  "http://localhost:3000",
   "http://localhost:5173",
   "https://nexus-biomedical.vercel.app",
-  
 ].filter(Boolean);
 
 app.use(
