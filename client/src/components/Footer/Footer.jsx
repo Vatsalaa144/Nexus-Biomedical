@@ -1,10 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import {
-  FaFacebookF,
   FaTwitter,
   FaLinkedinIn,
-  FaYoutube,
   FaEnvelope,
   FaMapMarkerAlt,
 } from "react-icons/fa";
@@ -28,36 +26,21 @@ const Footer = () => {
               </p>
               <div className="social-links">
                 <a
-                  href="https://facebook.com/IndianSocietyofToxicology"
+                  href="https://x.com/JairamJournal"
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="Facebook"
-                >
-                  <FaFacebookF />
-                </a>
-                <a
-                  href="https://twitter.com/IST_India"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Twitter"
+                  aria-label="X"
                 >
                   <FaTwitter />
                 </a>
+
                 <a
-                  href="https://linkedin.com/company/indian-society-of-toxicology"
+                  href="https://www.linkedin.com/in/jairam-journal-5a8174404/"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="LinkedIn"
                 >
                   <FaLinkedinIn />
-                </a>
-                <a
-                  href="https://youtube.com/@indiansocietyoftoxicology"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="YouTube"
-                >
-                  <FaYoutube />
                 </a>
               </div>
             </div>
@@ -67,7 +50,17 @@ const Footer = () => {
               <h4 className="footer-heading">Quick Links</h4>
               <ul className="footer-links">
                 <li>
-                  <Link to="/">Home</Link>
+                <Link
+  to="/"
+  onClick={() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }}
+>
+  Home
+</Link>
                 </li>
                 <li>
                   <Link to="/about">About Us</Link>
@@ -124,8 +117,7 @@ const Footer = () => {
                 <div className="contact-item">
                   <FaEnvelope className="contact-icon" />
                   <div>
-                    <a href="https://mail.google.com/mail/u/0/?view=cm&fs=1&tf=1&to=nexusbiomedicalresearch@gmail.com" >
-                        
+                    <a href="https://mail.google.com/mail/u/0/?view=cm&fs=1&tf=1&to=nexusbiomedicalresearch@gmail.com">
                       nexusbiomedicalresearch@gmail.com
                     </a>
                   </div>
