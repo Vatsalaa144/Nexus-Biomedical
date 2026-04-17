@@ -50,7 +50,7 @@ const emailWrapper = (headerTitle, headerSub, bodyHtml) => `
 // EMAIL 1 — Admin: new application alert with Approve / Reject buttons
 // ─────────────────────────────────────────────────────────────────────────────
 const sendAdminApplicationAlert = async (transporter, member) => {
-  const SERVER_URL = process.env.SERVER_URL || "http://localhost:5000";
+  const SERVER_URL = process.env.SERVER_URL ;
 
   const govtIdUrl = `${SERVER_URL}/uploads/membership/${member.documents.govtId}`;
   const qualificationUrl = `${SERVER_URL}/uploads/membership/${member.documents.qualificationProof}`;
@@ -157,7 +157,7 @@ const sendApplicantConfirmation = async (transporter, member) => {
 // EMAIL 3 — Applicant: approved + payment instructions with "Payment Done" button
 // ─────────────────────────────────────────────────────────────────────────────
 const sendPaymentInstructionEmail = async (transporter, member) => {
-  const SERVER_URL = process.env.SERVER_URL || "http://localhost:5000";
+  const SERVER_URL = process.env.SERVER_URL ;
   const paymentDoneUrl = `${SERVER_URL}/api/membership/payment-done/${member._id}`;
 
   const body = `
@@ -219,7 +219,7 @@ const sendPaymentInstructionEmail = async (transporter, member) => {
 // EMAIL 4 — Admin: payment initiated alert with "Confirm Payment" link
 // ─────────────────────────────────────────────────────────────────────────────
 const sendAdminPaymentInitiatedAlert = async (transporter, member) => {
-  const SERVER_URL = process.env.SERVER_URL || "http://localhost:5000";
+  const SERVER_URL = process.env.SERVER_URL ;
   const confirmUrl = `${SERVER_URL}/api/membership/confirm-payment/${member._id}`;
 
   const body = `
