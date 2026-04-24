@@ -164,8 +164,9 @@
 
 .about-objectives-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 30px;
+  align-items: stretch;
 }
 
 .about-objective-item {
@@ -178,6 +179,8 @@
   align-items: flex-start;
   transition: all 0.3s ease;
   border: 2px solid transparent;
+  height: 100%;
+  box-sizing: border-box;
 }
 
 .about-objective-item:hover {
@@ -214,67 +217,222 @@
   font-size: 0.95rem;
 }
 
-/* ===== MEMBERSHIP SECTION ===== */
-.about-membership-section {
-  background: white;
-  padding: 60px 40px;
-  border-radius: 20px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-  margin-top: 40px;
+/* ===== VM LIST (used inside Mission objective card) ===== */
+.about-vm-list {
+  list-style: none;
+  padding: 0;
+  margin: 6px 0 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-.about-benefits-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 30px;
-}
-
-.about-benefit-card {
-  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-  border-radius: 12px;
-  padding: 35px;
-  border-left: 5px solid #2c5f8d;
-  transition: all 0.3s ease;
+.about-vm-list li {
   position: relative;
-  overflow: hidden;
-}
-
-.about-benefit-card::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, #2c5f8d 0%, #3498db 100%);
-  transform: translateX(-100%);
-  transition: transform 0.5s ease;
-}
-
-.about-benefit-card:hover::before {
-  transform: translateX(0);
-}
-
-.about-benefit-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
-}
-
-.about-benefit-card h3 {
-  font-size: 1.3rem;
-  color: #2c3e50;
-  margin-bottom: 15px;
-  font-weight: 700;
-  position: relative;
-  z-index: 1;
-}
-
-.about-benefit-card p {
+  padding-left: 22px;
   color: #666;
   line-height: 1.6;
   font-size: 0.95rem;
+}
+
+.about-vm-list li::before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: #2c5f8d;
+  font-size: 0.9rem;
+  top: 1px;
+}
+
+/* ===== FOUNDER'S MESSAGE ===== */
+.about-founders-title {
+  margin-top: 70px;
+}
+
+.about-founders-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 28px;
+  margin-top: 20px;
+}
+
+.about-founder-card {
+  background: white;
+  border-radius: 12px;
+  padding: 28px 30px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.about-founder-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+  border-color: #2c5f8d;
+}
+
+.about-founder-diamond {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.about-founder-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.about-founder-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #2c3e50;
+}
+
+.about-founder-role {
+  font-size: 0.95rem;
+  color: #2c5f8d;
+  font-weight: 600;
+}
+
+.about-founder-dept {
+  font-size: 0.88rem;
+  color: #888;
+  font-style: italic;
+}
+
+.about-founder-quote {
+  margin: 0;
+  padding: 14px 18px;
+  border-left: 4px solid #2c5f8d;
+  background: #f8fafc;
+  border-radius: 0 8px 8px 0;
+  color: #555;
+  font-size: 0.95rem;
+  line-height: 1.75;
+  font-style: italic;
+}
+
+/* ===== LEGAL STATUS & REGISTRATION ===== */
+.about-legal-section {
+  background: white;
+  border-radius: 20px;
+  padding: 60px 50px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e9ecef;
+}
+
+.about-legal-section .about-section-title {
+  text-align: center;
+}
+
+.about-legal-section .about-section-title::after {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.about-legal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  margin-top: 40px;
+}
+
+.about-legal-block {
+  padding-bottom: 28px;
+  border-bottom: 1px solid #eef2f7;
+}
+
+.about-legal-block:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.about-legal-heading {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #2c3e50;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  margin-bottom: 12px;
+  text-align: left;
+}
+
+.about-legal-block p {
+  color: #555;
+  font-size: 0.97rem;
+  line-height: 1.8;
+  text-align: left;
+  margin: 0;
+}
+
+.about-legal-address {
+  font-size: 0.97rem;
+  color: #555;
+  line-height: 1.9;
+}
+
+.about-legal-list {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+}
+
+.about-legal-list li {
   position: relative;
-  z-index: 1;
+  padding-left: 20px;
+  color: #555;
+  font-size: 0.97rem;
+  line-height: 1.75;
+}
+
+.about-legal-list li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #2c5f8d;
+  font-weight: 700;
+}
+
+/* Legal Registration Table */
+.about-legal-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 8px;
+  font-size: 0.95rem;
+}
+
+.about-legal-table tr {
+  border-bottom: 1px solid #f0f4f8;
+}
+
+.about-legal-table tr:last-child {
+  border-bottom: none;
+}
+
+.about-legal-table td {
+  padding: 10px 14px;
+  color: #555;
+  vertical-align: top;
+  line-height: 1.7;
+  text-align: left;
+}
+
+.about-legal-label {
+  font-weight: 600;
+  color: #2c3e50;
+  width: 220px;
+  white-space: nowrap;
+}
+
+.about-legal-table tr:nth-child(even) {
+  background: #f8fafc;
 }
 
 /* ===== ANIMATIONS ===== */
@@ -301,9 +459,12 @@
     font-size: 2.2rem;
   }
 
-  .about-objectives-grid,
-  .about-benefits-grid {
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  .about-objectives-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .about-legal-section {
+    padding: 50px 35px;
   }
 }
 
@@ -339,8 +500,7 @@
     padding: 25px;
   }
 
-  .about-objectives-section,
-  .about-membership-section {
+  .about-objectives-section {
     padding: 40px 25px;
   }
 
@@ -350,19 +510,35 @@
   }
 
   .about-objectives-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .about-objective-item {
     padding: 25px;
   }
 
-  .about-benefits-grid {
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  .about-founders-grid {
+    grid-template-columns: 1fr;
   }
 
-  .about-benefit-card {
-    padding: 25px;
+  .about-legal-section {
+    padding: 40px 25px;
+  }
+
+  .about-legal-label {
+    width: auto;
+    white-space: normal;
+    display: block;
+  }
+
+  .about-legal-table td {
+    display: block;
+    padding: 4px 0;
+  }
+
+  .about-legal-table tr {
+    display: block;
+    padding: 10px 0;
   }
 }
 
@@ -421,8 +597,7 @@
     font-size: 1.2rem;
   }
 
-  .about-objectives-section,
-  .about-membership-section {
+  .about-objectives-section {
     padding: 30px 20px;
   }
 
@@ -436,6 +611,10 @@
     gap: 15px;
   }
 
+  .about-objectives-grid {
+    grid-template-columns: 1fr;
+  }
+
   .about-objective-number {
     font-size: 2rem;
   }
@@ -444,16 +623,12 @@
     font-size: 1.2rem;
   }
 
-  .about-benefits-grid {
-    grid-template-columns: 1fr;
+  .about-founder-card {
+    padding: 22px 18px;
   }
 
-  .about-benefit-card {
-    padding: 20px;
-  }
-
-  .about-benefit-card h3 {
-    font-size: 1.2rem;
+  .about-legal-section {
+    padding: 30px 18px;
   }
 }
 
@@ -464,10 +639,6 @@
   }
 
   .about-objectives-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  .about-benefits-grid {
     grid-template-columns: repeat(3, 1fr);
   }
 
@@ -505,14 +676,12 @@
   }
 
   .about-info-cards,
-  .about-objectives-grid,
-  .about-benefits-grid {
+  .about-objectives-grid {
     break-inside: avoid;
   }
 
   .about-info-card,
-  .about-objective-item,
-  .about-benefit-card {
+  .about-objective-item {
     box-shadow: none !important;
     border: 1px solid #ddd !important;
   }

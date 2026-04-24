@@ -11,6 +11,11 @@ import Contact from "./pages/Contact/Contact";
 import AnnualMembership from "./pages/Membership/Annualmembership";
 import LifetimeMembership from "./pages/Membership/Lifetimemembership";
 import MembershipLanding from "./pages/Membership/MembershipLanding";
+import Research from "./pages/Research/Research";
+import Collaborations from "./pages/Collaborations/Collaborations";
+import JairamJournal from "./pages/JairamJournal/JairamJournal";
+import Resources from "./pages/Resources/Resources";
+import Media from "./pages/Media/Media";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -34,6 +39,11 @@ function AppLayout() {
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/blog/:slug" element={<BlogPostPage />} />
           <Route path="/committee" element={<Committee />} />
+          <Route path="/research" element={<Research />} />
+          <Route path="/collaborations" element={<Collaborations />} />
+          <Route path="/jairam-journal" element={<JairamJournal />} />
+          <Route path="/resources" element={<Resources />} />
+          <Route path="/media" element={<Media />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/membership" element={<MembershipLanding />} />
           <Route path="/membership/annual" element={<AnnualMembership />} />

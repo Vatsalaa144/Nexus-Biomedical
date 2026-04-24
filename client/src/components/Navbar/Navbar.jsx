@@ -19,8 +19,9 @@ const Navbar = () => {
     { path: "/", label: "Home" },
     { path: "/about", label: "About Us" },
     { path: "/committee", label: "Committee" },
+    { path: "/research", label: "Research" },
+    { path: "/collaborations", label: "Collaborations" },
     { path: "/blog", label: "Blog" },
-    { path: "/contact", label: "Contact" },
   ];
 
   return (
@@ -39,11 +40,12 @@ const Navbar = () => {
 
           {/* Title Info in 3 lines on right */}
           <div className="header-info">
-            <div className="info-line-1">Official Website of</div>
             <div className="info-line-2">
               NEXUS BIOMEDICAL RESEARCH FOUNDATION TRUST
             </div>
-            <div className="info-line-3">Registration No. 202501041059811</div>
+            <div className="info-line-3">
+              Registered Trust | Reg. No.: 202501041059811
+            </div>
           </div>
         </div>
       </div>
@@ -69,14 +71,14 @@ const Navbar = () => {
               ))}
 
               <li className="nav-item">
-                <a
-                  href="https://jist-journal.org"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="nav-link"
+                <Link
+                  to="/jairam-journal"
+                  className={`nav-link ${
+                    location.pathname === "/jairam-journal" ? "active" : ""
+                  }`}
                 >
                   JAIRAM Journal
-                </a>
+                </Link>
               </li>
               <li className="nav-item nav-item-dropdown">
                 <Link
@@ -84,6 +86,36 @@ const Navbar = () => {
                   className={`nav-link ${location.pathname.startsWith("/membership") ? "active" : ""}`}
                 >
                   MEMBERSHIP
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link
+                  to="/resources"
+                  className={`nav-link ${
+                    location.pathname === "/resources" ? "active" : ""
+                  }`}
+                >
+                  Resources
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link
+                  to="/media"
+                  className={`nav-link ${
+                    location.pathname === "/media" ? "active" : ""
+                  }`}
+                >
+                  Media & Updates
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link
+                  to="/contact"
+                  className={`nav-link ${
+                    location.pathname === "/contact" ? "active" : ""
+                  }`}
+                >
+                  Contact
                 </Link>
               </li>
             </ul>
