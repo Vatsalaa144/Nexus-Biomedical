@@ -19,7 +19,7 @@ const Navbar = () => {
     { path: "/", label: "Home" },
     { path: "/about", label: "About Us" },
     { path: "/committee", label: "Committee" },
-    { path: "/research", label: "Research" },
+    { path: "/research", label: "Research/Grants" },
     { path: "/collaborations", label: "Collaborations" },
     { path: "/blog", label: "Blog" },
   ];
