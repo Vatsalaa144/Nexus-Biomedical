@@ -32,11 +32,13 @@
 }
 
 .about-page-title p {
-  font-size: 1rem;
+  font-size: 0.95rem;
   opacity: 0.9;
-  max-width: 600px;
+  max-width: 700px;
   margin: 0 auto;
-  white-space: nowrap; 
+ white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* ===== COMPARTMENT (CARD WRAPPER) ===== */
