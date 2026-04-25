@@ -1,11 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Source+Sans+3:wght@300;400;500;600&display=swap');
-
 :root {
   --navy-dark:   #1a2a3a;
   --navy:        #1e3a5f;
   --navy-mid:    #234876;
-  --teal:        #2a9d8f;
-  --teal-light:  #3ab5a6;
+  --teal:        #1f449a;
+  --teal-light:  #3a7eb5;
   --teal-dim:    rgba(42, 157, 143, 0.12);
   --white:       #ffffff;
   --off-white:   #f7f9fb;
@@ -22,50 +20,45 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 .media-page {
-  font-family: 'Source Sans 3', sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background: var(--off-white);
   min-height: 100vh;
 }
 
-/* ── Hero Banner ── */
+/* ── Hero Banner — matches .about-page-title exactly ── */
 .media-hero {
-  background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 50%, var(--navy-mid) 100%);
-  padding: 56px 80px 52px;
+  background: linear-gradient(135deg, #1a365d 0%, #2d3748 100%);
+  color: white;
+  padding: 40px 0;
+  margin-bottom: 0;
   text-align: center;
-  position: relative;
-  overflow: hidden;
+  animation: about-fadeInDown 0.8s ease-out;
 }
 
-.media-hero::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse at 20% 50%, rgba(42,157,143,0.18) 0%, transparent 55%),
-    radial-gradient(ellipse at 80% 30%, rgba(255,255,255,0.04) 0%, transparent 50%);
-  pointer-events: none;
+@keyframes about-fadeInDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .hero-title {
-  font-family: 'Merriweather', Georgia, serif;
-  font-size: 32px;
+  font-size: 2rem;
   font-weight: 700;
-  color: var(--white);
-  letter-spacing: 0.01em;
-  position: relative;
-  z-index: 1;
-  margin-bottom: 12px;
+  color: #ffffff;
+  margin-bottom: 20px;
+  letter-spacing: normal;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .hero-subtitle {
-  font-size: 15px;
-  color: rgba(255,255,255,0.72);
-  font-weight: 300;
-  max-width: 500px;
+  font-size: 1rem;
+  color: rgba(255,255,255,0.9);
+  font-weight: 400;
+  max-width: 600px;
   margin: 0 auto;
   line-height: 1.6;
-  position: relative;
-  z-index: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* ── Content Area ── */
@@ -83,8 +76,8 @@
 }
 
 .section-title {
-  font-family: 'Merriweather', Georgia, serif;
-  font-size: 28px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 1.65rem;
   font-weight: 700;
   color: var(--navy);
   margin-bottom: 10px;
@@ -99,7 +92,7 @@
 }
 
 .section-desc {
-  font-size: 15px;
+  font-size: 1rem;
   color: var(--text-muted);
   font-weight: 400;
 }
@@ -159,8 +152,8 @@
 }
 
 .card-title {
-  font-family: 'Merriweather', Georgia, serif;
-  font-size: 17px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 1.05rem;
   font-weight: 700;
   color: var(--text-dark);
   line-height: 1.3;
@@ -168,9 +161,9 @@
 
 /* ── Card Body ── */
 .card-desc {
-  font-size: 13.5px;
+  font-size: 0.95rem;
   color: var(--text-body);
-  line-height: 1.65;
+  line-height: 1.82;
   font-weight: 400;
 }
 
@@ -184,9 +177,9 @@
 }
 
 .card-bullet {
-  font-size: 13px;
+  font-size: 0.92rem;
   color: var(--text-body);
-  line-height: 1.5;
+  line-height: 1.65;
   display: flex;
   gap: 6px;
 }
@@ -209,7 +202,7 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 11.5px;
+  font-size: 0.85rem;
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -252,8 +245,8 @@
 
 /* ── Responsive ── */
 @media (max-width: 768px) {
-  .media-hero  { padding: 40px 24px 36px; }
-  .hero-title  { font-size: 24px; }
+  .media-hero  { padding: 30px 20px; }
+  .hero-title  { font-size: 1.6rem; }
   .media-content { padding: 40px 20px 60px; }
   .media-grid  { grid-template-columns: 1fr; }
 }

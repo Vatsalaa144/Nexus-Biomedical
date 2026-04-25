@@ -36,9 +36,7 @@ const MembershipLanding = () => {
         <div className="ml-hero-content">
           <span className="ml-hero-tag">Official Membership Programme</span>
           <h1 className="ml-hero-title">MEMBERSHIP</h1>
-          <p className="ml-hero-sub">
-            🌐 <strong>Join the Network</strong>
-          </p>
+          
           <p className="ml-hero-desc">
             Nexus Biomedical Research Foundation Trust offers a platform for academic
             interaction, research orientation, and professional development in

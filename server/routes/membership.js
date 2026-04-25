@@ -5,6 +5,7 @@ const path    = require("path");
 const fs      = require("fs");
 
 const Membership = require("../models/Membership");
+const { verifyToken } = require("../utils/adminToken");
 const {
   sendMembershipApplicationEmails,
   sendApprovalAndPaymentEmail,
@@ -67,7 +68,7 @@ const resultPage = (title, message, color) => `
 </body></html>`;
 
 // ── Confirm payment page (admin enters Membership ID) ─────────────────────────
-const confirmPaymentPage = (memberId, memberName, planLabel) => `
+const confirmPaymentPage = (memberId, memberName, planLabel, token) => `
 <!DOCTYPE html><html>
 <head>
   <meta charset="UTF-8"/>
@@ -102,7 +103,7 @@ const confirmPaymentPage = (memberId, memberName, planLabel) => `
       <strong>Member:</strong> ${memberName}<br/>
       <strong>Plan:</strong> ${planLabel}
     </div>
-    <form method="POST" action="/api/membership/confirm-payment/${memberId}">
+    <form method="POST" action="/api/membership/confirm-payment/${memberId}?token=${token}">
       <label for="membershipId">Membership ID</label>
       <input type="text" id="membershipId" name="membershipId"
              placeholder="e.g. NB-2025-00123" required autocomplete="off"/>
@@ -112,6 +113,42 @@ const confirmPaymentPage = (memberId, memberName, planLabel) => `
     <div class="brand">Nexus Biomedical Research Foundation Trust</div>
   </div>
 </body></html>`;
+
+const sanitizeText = (value, max = 500) => {
+  if (value === undefined || value === null) return "";
+  return String(value)
+    .trim()
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .slice(0, max);
+};
+
+const sanitizeEmail = (value) => sanitizeText(value, 254).toLowerCase();
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const phoneRegex = /^[+\d\s\-().]{7,20}$/;
+const pinRegex = /^\d{6}$/;
+
+const requireText = (value, label, min = 1) => {
+  if (!value || value.trim().length < min) return `${label} is required.`;
+  return null;
+};
+
+const validateAdminToken = (req, res) => {
+  if (verifyToken(req.params.id, req.query.token)) return true;
+  res.send(resultPage("Unauthorized", "Invalid or missing admin token.", "#dc2626"));
+  return false;
+};
+
+const cleanupUploadedFiles = (files = {}) => {
+  Object.values(files).flat().forEach((file) => {
+    if (!file?.path) return;
+    fs.unlink(file.path, (err) => {
+      if (err) console.warn("Uploaded file cleanup failed:", err.message);
+    });
+  });
+};
 
 // ─────────────────────────────────────────────────────────────────────────────
 // POST /api/membership/apply
@@ -131,51 +168,118 @@ router.post("/apply", (req, res) => {
     if (!files.govtId?.[0])             missingFiles.push("govtId");
     if (!files.qualificationProof?.[0]) missingFiles.push("qualificationProof");
     if (!files.designationProof?.[0])   missingFiles.push("designationProof");
-    if (missingFiles.length)
+    if (missingFiles.length) {
+      cleanupUploadedFiles(files);
       return res.status(400).json({ error: "Missing required documents.", missing: missingFiles });
+    }
 
-    if (!["annual", "lifetime"].includes(body.membershipType))
+    const membershipType = sanitizeText(body.membershipType, 20);
+    if (!["annual", "lifetime"].includes(membershipType)) {
+      cleanupUploadedFiles(files);
       return res.status(400).json({ error: "Invalid membership type." });
+    }
+
+    const validationErrors = [
+      requireText(body.fullName, "Full name", 2),
+      requireText(body.dob, "Date of birth"),
+      requireText(body.gender, "Gender"),
+      requireText(body.nationality, "Nationality"),
+      requireText(body.email, "Email"),
+      requireText(body.phone, "Phone"),
+      requireText(body.whatsapp, "WhatsApp"),
+      requireText(body.address, "Address"),
+      requireText(body.city, "City"),
+      requireText(body.state, "State"),
+      requireText(body.pin, "PIN"),
+      requireText(body.qualification, "Qualification"),
+      requireText(body.designation, "Designation"),
+      requireText(body.department, "Department"),
+      requireText(body.institution, "Institution"),
+      requireText(body.institutionCity, "Institution city"),
+      requireText(body.registrationNo, "Registration number"),
+    ].filter(Boolean);
+
+    const sanitized = {
+      membershipType,
+      fullName: sanitizeText(body.fullName, 150),
+      dob: sanitizeText(body.dob, 30),
+      gender: sanitizeText(body.gender, 50),
+      nationality: sanitizeText(body.nationality, 100),
+      email: sanitizeEmail(body.email),
+      phone: sanitizeText(body.phone, 30),
+      whatsapp: sanitizeText(body.whatsapp, 30),
+      address: sanitizeText(body.address, 500),
+      city: sanitizeText(body.city, 100),
+      state: sanitizeText(body.state, 100),
+      pin: sanitizeText(body.pin, 10),
+      qualification: sanitizeText(body.qualification, 150),
+      designation: sanitizeText(body.designation, 150),
+      department: sanitizeText(body.department, 150),
+      institution: sanitizeText(body.institution, 200),
+      institutionCity: sanitizeText(body.institutionCity, 100),
+      registrationNo: sanitizeText(body.registrationNo, 100),
+      orcidId: sanitizeText(body.orcidId, 100),
+      agreedToTerms: body.agreedToTerms === "true",
+      agreedToPrivacy: body.agreedToPrivacy === "true",
+    };
+
+    if (!emailRegex.test(sanitized.email))
+      validationErrors.push("Invalid email address.");
+    if (!phoneRegex.test(sanitized.phone))
+      validationErrors.push("Invalid phone number.");
+    if (!phoneRegex.test(sanitized.whatsapp))
+      validationErrors.push("Invalid WhatsApp number.");
+    if (!pinRegex.test(sanitized.pin))
+      validationErrors.push("PIN must be a 6-digit number.");
+    if (!sanitized.agreedToTerms || !sanitized.agreedToPrivacy)
+      validationErrors.push("You must agree to terms and privacy policy.");
+
+    if (validationErrors.length) {
+      cleanupUploadedFiles(files);
+      return res.status(400).json({ error: validationErrors[0], details: validationErrors });
+    }
 
     try {
       const existing = await Membership.findOne({
-        email: body.email?.toLowerCase().trim(),
-        membershipType: body.membershipType,
+        email: sanitized.email,
+        membershipType: sanitized.membershipType,
         status: { $in: ["pending", "approved", "payment_initiated", "payment_confirmed"] },
       });
 
-      if (existing)
+      if (existing) {
+        cleanupUploadedFiles(files);
         return res.status(409).json({
           error: "An active application with this email already exists for this plan.",
         });
+      }
 
       const member = await Membership.create({
-        membershipType: body.membershipType,
-        fullName:    body.fullName?.trim(),
-        dob:         body.dob,
-        gender:      body.gender,
-        nationality: body.nationality?.trim(),
-        email:    body.email?.trim().toLowerCase(),
-        phone:    body.phone?.trim(),
-        whatsapp: body.whatsapp?.trim(),
-        address:  body.address?.trim(),
-        city:     body.city?.trim(),
-        state:    body.state?.trim(),
-        pin:      body.pin?.trim(),
-        qualification:   body.qualification,
-        designation:     body.designation?.trim(),
-        department:      body.department?.trim(),
-        institution:     body.institution?.trim(),
-        institutionCity: body.institutionCity?.trim(),
-        registrationNo:  body.registrationNo?.trim(),
-        orcidId:         body.orcidId?.trim() || "",
+        membershipType: sanitized.membershipType,
+        fullName:    sanitized.fullName,
+        dob:         sanitized.dob,
+        gender:      sanitized.gender,
+        nationality: sanitized.nationality,
+        email:    sanitized.email,
+        phone:    sanitized.phone,
+        whatsapp: sanitized.whatsapp,
+        address:  sanitized.address,
+        city:     sanitized.city,
+        state:    sanitized.state,
+        pin:      sanitized.pin,
+        qualification:   sanitized.qualification,
+        designation:     sanitized.designation,
+        department:      sanitized.department,
+        institution:     sanitized.institution,
+        institutionCity: sanitized.institutionCity,
+        registrationNo:  sanitized.registrationNo,
+        orcidId:         sanitized.orcidId,
         documents: {
           govtId:             files.govtId[0].filename,
           qualificationProof: files.qualificationProof[0].filename,
           designationProof:   files.designationProof[0].filename,
         },
-        agreedToTerms:   body.agreedToTerms === "true",
-        agreedToPrivacy: body.agreedToPrivacy === "true",
+        agreedToTerms:   sanitized.agreedToTerms,
+        agreedToPrivacy: sanitized.agreedToPrivacy,
       });
 
       try { await sendMembershipApplicationEmails(member); }
@@ -199,6 +303,8 @@ router.post("/apply", (req, res) => {
 // ─────────────────────────────────────────────────────────────────────────────
 router.get("/approve/:id", async (req, res) => {
   try {
+    if (!validateAdminToken(req, res)) return;
+
     const member = await Membership.findById(req.params.id);
     if (!member)
       return res.send(resultPage("Not Found", "Application not found.", "#dc2626"));
@@ -230,6 +336,8 @@ router.get("/approve/:id", async (req, res) => {
 // ─────────────────────────────────────────────────────────────────────────────
 router.get("/reject/:id", async (req, res) => {
   try {
+    if (!validateAdminToken(req, res)) return;
+
     const member = await Membership.findById(req.params.id);
     if (!member)
       return res.send(resultPage("Not Found", "Application not found.", "#dc2626"));
@@ -297,6 +405,8 @@ router.get("/payment-done/:id", async (req, res) => {
 // ─────────────────────────────────────────────────────────────────────────────
 router.get("/confirm-payment/:id", async (req, res) => {
   try {
+    if (!validateAdminToken(req, res)) return;
+
     const member = await Membership.findById(req.params.id);
     if (!member)
       return res.send(resultPage("Not Found", "Application not found.", "#dc2626"));
@@ -306,7 +416,7 @@ router.get("/confirm-payment/:id", async (req, res) => {
       return res.send(resultPage("Not Ready", "This member has not initiated payment yet.", "#d97706"));
 
     const planLabel = member.membershipType === "lifetime" ? "Lifetime Membership" : "Annual Membership";
-    return res.send(confirmPaymentPage(member._id, member.fullName, planLabel));
+    return res.send(confirmPaymentPage(member._id, member.fullName, planLabel, req.query.token));
   } catch (err) {
     console.error("Confirm payment GET error:", err);
     return res.send(resultPage("Error", "Something went wrong. Please try again.", "#dc2626"));
@@ -318,19 +428,24 @@ router.get("/confirm-payment/:id", async (req, res) => {
 // ─────────────────────────────────────────────────────────────────────────────
 router.post("/confirm-payment/:id", async (req, res) => {
   try {
+    if (!validateAdminToken(req, res)) return;
+
     const member     = await Membership.findById(req.params.id);
     const membershipId = req.body.membershipId?.trim();
 
     if (!member)
       return res.send(resultPage("Not Found", "Application not found.", "#dc2626"));
-    if (!membershipId)
-      return res.send(resultPage("Missing ID", "Please enter a Membership ID.", "#d97706"));
+    if (!membershipId || membershipId.length < 3)
+      return res.send(resultPage("Missing ID", "Please enter a valid Membership ID (min 3 characters).", "#d97706"));
     if (member.status === "payment_confirmed")
       return res.send(resultPage("Already Confirmed", `Payment already confirmed. Membership ID: <strong>${member.membershipId}</strong>`, "#16a34a"));
+    if (member.status !== "payment_initiated")
+      return res.send(resultPage("Not Ready", "This member has not initiated payment yet.", "#d97706"));
 
     member.status       = "payment_confirmed";
     member.paidAt       = new Date();
     member.membershipId = membershipId;
+    member.renewalReminderSentAt = null;
     await member.save();
 
     try { await sendPaymentConfirmedEmails(member); }

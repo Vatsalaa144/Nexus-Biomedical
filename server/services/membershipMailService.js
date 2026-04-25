@@ -1,4 +1,8 @@
 const nodemailer = require("nodemailer");
+const { generateToken } = require("../utils/adminToken");
+
+const getServerUrl = () =>
+  (process.env.SERVER_URL || "http://localhost:5000").replace(/\/+$/, "");
 
 // ── Transporter ───────────────────────────────────────────────────────────────
 const createTransporter = () =>
@@ -50,13 +54,14 @@ const emailWrapper = (headerTitle, headerSub, bodyHtml) => `
 // EMAIL 1 — Admin: new application alert with Approve / Reject buttons
 // ─────────────────────────────────────────────────────────────────────────────
 const sendAdminApplicationAlert = async (transporter, member) => {
-  const SERVER_URL = process.env.SERVER_URL ;
+  const SERVER_URL = getServerUrl();
+  const token = generateToken(member._id);
 
-  const govtIdUrl = `${SERVER_URL}/uploads/membership/${member.documents.govtId}`;
-  const qualificationUrl = `${SERVER_URL}/uploads/membership/${member.documents.qualificationProof}`;
-  const designationUrl = `${SERVER_URL}/uploads/membership/${member.documents.designationProof}`;
-  const approveUrl = `${SERVER_URL}/api/membership/approve/${member._id}`;
-  const rejectUrl = `${SERVER_URL}/api/membership/reject/${member._id}`;
+  const govtIdUrl = `${SERVER_URL}/uploads/membership/${member.documents.govtId}?id=${member._id}&token=${token}`;
+  const qualificationUrl = `${SERVER_URL}/uploads/membership/${member.documents.qualificationProof}?id=${member._id}&token=${token}`;
+  const designationUrl = `${SERVER_URL}/uploads/membership/${member.documents.designationProof}?id=${member._id}&token=${token}`;
+  const approveUrl = `${SERVER_URL}/api/membership/approve/${member._id}?token=${token}`;
+  const rejectUrl = `${SERVER_URL}/api/membership/reject/${member._id}?token=${token}`;
 
   const body = `
     <p style="color:#333;margin:0 0 16px;">
@@ -157,7 +162,7 @@ const sendApplicantConfirmation = async (transporter, member) => {
 // EMAIL 3 — Applicant: approved + payment instructions with "Payment Done" button
 // ─────────────────────────────────────────────────────────────────────────────
 const sendPaymentInstructionEmail = async (transporter, member) => {
-  const SERVER_URL = process.env.SERVER_URL ;
+  const SERVER_URL = getServerUrl();
   const paymentDoneUrl = `${SERVER_URL}/api/membership/payment-done/${member._id}`;
 
   const body = `
@@ -219,8 +224,9 @@ const sendPaymentInstructionEmail = async (transporter, member) => {
 // EMAIL 4 — Admin: payment initiated alert with "Confirm Payment" link
 // ─────────────────────────────────────────────────────────────────────────────
 const sendAdminPaymentInitiatedAlert = async (transporter, member) => {
-  const SERVER_URL = process.env.SERVER_URL ;
-  const confirmUrl = `${SERVER_URL}/api/membership/confirm-payment/${member._id}`;
+  const SERVER_URL = getServerUrl();
+  const token = generateToken(member._id);
+  const confirmUrl = `${SERVER_URL}/api/membership/confirm-payment/${member._id}?token=${token}`;
 
   const body = `
     <p style="color:#333;margin:0 0 16px;">
@@ -374,14 +380,15 @@ const sendRejectionEmailTemplate = async (transporter, member) => {
 // EMAIL 7 — Annual renewal reminder
 // ─────────────────────────────────────────────────────────────────────────────
 const sendRenewalReminderEmail = async (transporter, member) => {
-  const joinedDate = new Date(member.approvedAt).toLocaleDateString("en-IN", {
+  const membershipStartDate = member.paidAt || member.approvedAt;
+  const joinedDate = new Date(membershipStartDate).toLocaleDateString("en-IN", {
     day: "numeric",
     month: "long",
     year: "numeric",
   });
   const expiryDate = new Date(
-    new Date(member.approvedAt).setFullYear(
-      new Date(member.approvedAt).getFullYear() + 1,
+    new Date(membershipStartDate).setFullYear(
+      new Date(membershipStartDate).getFullYear() + 1,
     ),
   ).toLocaleDateString("en-IN", {
     day: "numeric",
