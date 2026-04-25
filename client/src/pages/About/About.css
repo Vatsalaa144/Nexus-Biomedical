@@ -20,7 +20,7 @@
   background: linear-gradient(135deg, #1a365d 0%, #2d3748 100%);
   color: white;
   padding: 40px 0;
-  margin-bottom: 50px;
+  margin-bottom: 40px;
   text-align: center;
   animation: about-fadeInDown 0.8s ease-out;
 }
@@ -36,6 +36,7 @@
   opacity: 0.9;
   max-width: 600px;
   margin: 0 auto;
+  white-space: nowrap; 
 }
 
 /* ===== COMPARTMENT (CARD WRAPPER) ===== */
