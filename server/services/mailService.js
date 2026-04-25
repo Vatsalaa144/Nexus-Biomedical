@@ -93,6 +93,7 @@ const sendNotificationEmail = async (
   return transporter.sendMail(mailOptions);
 };
 
+
 // ── Email 2: Auto-reply to the user who submitted the form ────────────────────
 // This is what THE USER sees in their inbox after submitting
 const sendAutoReply = async (transporter, { name, email }) => {
