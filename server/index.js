@@ -70,7 +70,9 @@ mongoose
 // ── CORS ─────────────────────────────────────────────────────
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://nexus-biomedical.vercel.app",
+  "https://nexus-biomedical.vercel.app", // optional (keep for fallback)
+  "https://www.nbrft.org",              // ✅ ADD THIS
+  "https://nbrft.org",                  // ✅ also add non-www
 ].filter(Boolean);
 
 app.use(
