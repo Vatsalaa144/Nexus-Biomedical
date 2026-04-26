@@ -7,9 +7,9 @@ require("dotenv").config();
 const { verifyToken } = require("./utils/adminToken");
 
 const emailRoute      = require("./routes/email");
-const membershipRoute = require("./routes/membership");           // ← NEW
+const membershipRoute = require("./routes/membership");
 
-const { startRenewalScheduler } = require("./utils/renewalScheduler"); // ← NEW
+const { startRenewalScheduler } = require("./utils/renewalScheduler");
 
 const app = express();
 app.set('trust proxy', 1);
@@ -20,6 +20,9 @@ const REQUIRED_ENV = [
   "GMAIL_USER",
   "GMAIL_APP_PASSWORD",
   "RECIPIENT_EMAIL",
+  "CLOUDINARY_CLOUD_NAME",
+  "CLOUDINARY_API_KEY",
+  "CLOUDINARY_API_SECRET",
 ];
 
 const PRODUCTION_REQUIRED_ENV = [
@@ -50,7 +53,7 @@ mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
     console.log("✅ MongoDB connected");
-    startRenewalScheduler();                                       // ← NEW
+    startRenewalScheduler();
   })
   .catch((err) => {
     console.error("❌ MongoDB connection failed:", err.message);
@@ -82,9 +85,10 @@ app.use(
 // ── Body Parser ───────────────────────────────────────────────────────────────
 // Allows Express to read JSON from request body
 app.use(express.json({ limit: "10kb" })); // max 10kb to prevent large payloads
-app.use(express.urlencoded({ extended: true }));                  // ← NEW (needed for multipart form fields)
+app.use(express.urlencoded({ extended: true }));
 
 // ── Routes ────────────────────────────────────────────────────────────────────
+// Legacy route for documents uploaded before the Cloudinary migration.
 app.get("/uploads/membership/:filename", (req, res) => {
   if (!verifyToken(req.query.id, req.query.token))
     return res.status(403).json({ error: "Unauthorized" });
@@ -99,7 +103,7 @@ app.get("/uploads/membership/:filename", (req, res) => {
 });
 
 app.use("/api", emailRoute);
-app.use("/api/membership", membershipRoute);                      // ← NEW
+app.use("/api/membership", membershipRoute);
 
 // ── Health Check ──────────────────────────────────────────────────────────────
 // Simple route to verify server is running

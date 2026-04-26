@@ -2,7 +2,7 @@ const express = require("express");
 const router  = express.Router();
 const multer  = require("multer");
 const path    = require("path");
-const fs      = require("fs");
+const cloudinary = require("cloudinary").v2;
 
 const Membership = require("../models/Membership");
 const { verifyToken } = require("../utils/adminToken");
@@ -14,22 +14,25 @@ const {
   sendRejectionEmail,
 } = require("../services/membershipMailService");
 
-// ── File upload setup ─────────────────────────────────────────────────────────
-const uploadDir = path.join(__dirname, "../uploads/membership");
-if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
-
-const storage = multer.diskStorage({
-  destination: (_req, _file, cb) => cb(null, uploadDir),
-  filename: (_req, file, cb) => {
-    const unique = `${Date.now()}-${Math.round(Math.random() * 1e6)}`;
-    cb(null, `${unique}${path.extname(file.originalname).toLowerCase()}`);
-  },
+// ── Cloudinary upload setup ───────────────────────────────────────────────────
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+const storage = multer.memoryStorage();
+const allowedFileExtensions = [".pdf", ".jpg", ".jpeg", ".png", ".docx"];
+const imageFileExtensions = [".jpg", ".jpeg", ".png"];
+
+const getCloudinaryResourceType = (ext) =>
+  imageFileExtensions.includes(ext) ? "image" : "raw";
+
 const fileFilter = (_req, file, cb) => {
-  const allowed = [".pdf", ".jpg", ".jpeg", ".png"];
   const ext = path.extname(file.originalname).toLowerCase();
-  allowed.includes(ext) ? cb(null, true) : cb(new Error(`File type not allowed: ${ext}`), false);
+  allowedFileExtensions.includes(ext)
+    ? cb(null, true)
+    : cb(new Error(`File type not allowed: ${ext || "unknown"}`), false);
 };
 
 const upload = multer({
@@ -141,13 +144,72 @@ const validateAdminToken = (req, res) => {
   return false;
 };
 
-const cleanupUploadedFiles = (files = {}) => {
-  Object.values(files).flat().forEach((file) => {
-    if (!file?.path) return;
-    fs.unlink(file.path, (err) => {
-      if (err) console.warn("Uploaded file cleanup failed:", err.message);
-    });
+const sendMembershipEmailInBackground = (label, sendEmail) => {
+  setImmediate(() => {
+    Promise.resolve()
+      .then(sendEmail)
+      .catch((err) => console.warn(`${label} failed:`, err.message));
   });
+};
+
+const uploadFileToCloudinary = (file, fieldName) => new Promise((resolve, reject) => {
+  const ext = path.extname(file.originalname).toLowerCase();
+  const resourceType = getCloudinaryResourceType(ext);
+  const baseName = path.basename(file.originalname, ext)
+    .replace(/[^a-z0-9_-]+/gi, "-")
+    .slice(0, 60);
+  const unique = `${Date.now()}-${Math.round(Math.random() * 1e6)}-${fieldName}-${baseName || "document"}`;
+  const publicId = resourceType === "raw" ? `${unique}${ext}` : unique;
+
+  const uploadStream = cloudinary.uploader.upload_stream(
+    {
+      resource_type: resourceType,
+      asset_folder: "nexus-membership",
+      folder: "nexus-membership",
+      public_id: publicId,
+    },
+    (err, result) => {
+      if (err) return reject(err);
+      return resolve({
+        url: result.secure_url,
+        publicId: result.public_id,
+        resourceType: result.resource_type,
+        originalName: file.originalname,
+        format: result.format || ext.replace(".", ""),
+        bytes: result.bytes,
+      });
+    },
+  );
+
+  uploadStream.end(file.buffer);
+});
+
+const cleanupCloudinaryDocuments = async (documents = {}) => {
+  const uploaded = Object.values(documents).filter((doc) => doc?.publicId);
+  const results = await Promise.allSettled(uploaded.map((doc) => (
+    cloudinary.uploader.destroy(doc.publicId, {
+      resource_type: doc.resourceType || "image",
+    })
+  )));
+
+  results.forEach((result) => {
+    if (result.status === "rejected")
+      console.warn("Cloudinary cleanup failed:", result.reason?.message || result.reason);
+  });
+};
+
+const uploadDocumentsToCloudinary = async (files) => {
+  const documents = {};
+
+  try {
+    documents.govtId = await uploadFileToCloudinary(files.govtId[0], "govtId");
+    documents.qualificationProof = await uploadFileToCloudinary(files.qualificationProof[0], "qualificationProof");
+    documents.designationProof = await uploadFileToCloudinary(files.designationProof[0], "designationProof");
+    return documents;
+  } catch (err) {
+    await cleanupCloudinaryDocuments(documents);
+    throw err;
+  }
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -169,13 +231,11 @@ router.post("/apply", (req, res) => {
     if (!files.qualificationProof?.[0]) missingFiles.push("qualificationProof");
     if (!files.designationProof?.[0])   missingFiles.push("designationProof");
     if (missingFiles.length) {
-      cleanupUploadedFiles(files);
       return res.status(400).json({ error: "Missing required documents.", missing: missingFiles });
     }
 
     const membershipType = sanitizeText(body.membershipType, 20);
     if (!["annual", "lifetime"].includes(membershipType)) {
-      cleanupUploadedFiles(files);
       return res.status(400).json({ error: "Invalid membership type." });
     }
 
@@ -235,9 +295,10 @@ router.post("/apply", (req, res) => {
       validationErrors.push("You must agree to terms and privacy policy.");
 
     if (validationErrors.length) {
-      cleanupUploadedFiles(files);
       return res.status(400).json({ error: validationErrors[0], details: validationErrors });
     }
+
+    let uploadedDocuments = null;
 
     try {
       const existing = await Membership.findOne({
@@ -247,11 +308,12 @@ router.post("/apply", (req, res) => {
       });
 
       if (existing) {
-        cleanupUploadedFiles(files);
         return res.status(409).json({
           error: "An active application with this email already exists for this plan.",
         });
       }
+
+      uploadedDocuments = await uploadDocumentsToCloudinary(files);
 
       const member = await Membership.create({
         membershipType: sanitized.membershipType,
@@ -273,17 +335,15 @@ router.post("/apply", (req, res) => {
         institutionCity: sanitized.institutionCity,
         registrationNo:  sanitized.registrationNo,
         orcidId:         sanitized.orcidId,
-        documents: {
-          govtId:             files.govtId[0].filename,
-          qualificationProof: files.qualificationProof[0].filename,
-          designationProof:   files.designationProof[0].filename,
-        },
+        documents: uploadedDocuments,
         agreedToTerms:   sanitized.agreedToTerms,
         agreedToPrivacy: sanitized.agreedToPrivacy,
       });
 
-      try { await sendMembershipApplicationEmails(member); }
-      catch (e) { console.warn("Membership emails failed:", e.message); }
+      sendMembershipEmailInBackground(
+        "Membership emails",
+        () => sendMembershipApplicationEmails(member),
+      );
 
       return res.status(201).json({
         success: true,
@@ -293,6 +353,7 @@ router.post("/apply", (req, res) => {
 
     } catch (err) {
       console.error("Apply error:", err);
+      if (uploadedDocuments) await cleanupCloudinaryDocuments(uploadedDocuments);
       return res.status(500).json({ error: "Internal server error." });
     }
   });
@@ -317,8 +378,10 @@ router.get("/approve/:id", async (req, res) => {
     member.approvedAt = new Date();
     await member.save();
 
-    try { await sendApprovalAndPaymentEmail(member); }
-    catch (e) { console.warn("Payment email failed:", e.message); }
+    sendMembershipEmailInBackground(
+      "Payment email",
+      () => sendApprovalAndPaymentEmail(member),
+    );
 
     return res.send(resultPage(
       "Application Approved ✅",
@@ -349,8 +412,10 @@ router.get("/reject/:id", async (req, res) => {
     member.status = "rejected";
     await member.save();
 
-    try { await sendRejectionEmail(member); }
-    catch (e) { console.warn("Rejection email failed:", e.message); }
+    sendMembershipEmailInBackground(
+      "Rejection email",
+      () => sendRejectionEmail(member),
+    );
 
     return res.send(resultPage(
       "Application Rejected",
@@ -383,8 +448,10 @@ router.get("/payment-done/:id", async (req, res) => {
     member.paymentInitiatedAt = new Date();
     await member.save();
 
-    try { await sendPaymentInitiatedEmails(member); }
-    catch (e) { console.warn("Payment initiated email failed:", e.message); }
+    sendMembershipEmailInBackground(
+      "Payment initiated email",
+      () => sendPaymentInitiatedEmails(member),
+    );
 
     return res.send(resultPage(
       "Payment Notification Sent ✅",
@@ -448,8 +515,10 @@ router.post("/confirm-payment/:id", async (req, res) => {
     member.renewalReminderSentAt = null;
     await member.save();
 
-    try { await sendPaymentConfirmedEmails(member); }
-    catch (e) { console.warn("Payment confirmed email failed:", e.message); }
+    sendMembershipEmailInBackground(
+      "Payment confirmed email",
+      () => sendPaymentConfirmedEmails(member),
+    );
 
     return res.send(resultPage(
       "Payment Confirmed ✅",

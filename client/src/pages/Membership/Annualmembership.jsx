@@ -21,6 +21,9 @@ const PRIVACY = [
   "By applying for membership, users agree to this privacy policy.",
 ];
 
+const ACCEPTED_FILE_EXTENSIONS = [".pdf", ".jpg", ".jpeg", ".png", ".docx"];
+const MAX_FILE_SIZE = 5 * 1024 * 1024;
+
 const AnnualMembership = () => {
   const clinicalQualifications = ["MBBS", "MD", "MS"];
   const navigate = useNavigate();
@@ -52,7 +55,28 @@ const AnnualMembership = () => {
 
   const handleFileChange = (e) => {
     const { name, files: fl } = e.target;
-    setFiles((prev) => ({ ...prev, [name]: fl[0] || null }));
+    const file = fl[0] || null;
+    if (!file) {
+      setFiles((prev) => ({ ...prev, [name]: null }));
+      return;
+    }
+
+    const ext = `.${file.name.split(".").pop()?.toLowerCase() || ""}`;
+    if (!ACCEPTED_FILE_EXTENSIONS.includes(ext)) {
+      setFiles((prev) => ({ ...prev, [name]: null }));
+      setErrors((prev) => ({ ...prev, [name]: "Accepted formats: PDF, JPG, PNG, DOCX" }));
+      e.target.value = "";
+      return;
+    }
+
+    if (file.size > MAX_FILE_SIZE) {
+      setFiles((prev) => ({ ...prev, [name]: null }));
+      setErrors((prev) => ({ ...prev, [name]: "File must be under 5MB" }));
+      e.target.value = "";
+      return;
+    }
+
+    setFiles((prev) => ({ ...prev, [name]: file }));
     if (errors[name]) setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
@@ -378,7 +402,7 @@ const AnnualMembership = () => {
                 </div>
               </div>
               <div className="mem-card-body">
-                <p className="mem-section-note">Upload clear scans or photos. Accepted: PDF, JPG, PNG (max 5MB each).</p>
+                <p className="mem-section-note">Upload clear scans or photos. Accepted: PDF, JPG, PNG, DOCX (max 5MB each).</p>
                 <div className="mem-upload-grid">
                   {[
                     { key: "govtId",            icon: "📄", label: "Government ID Proof",   hint: "Aadhaar / PAN / Driving Licence" },
@@ -389,10 +413,10 @@ const AnnualMembership = () => {
                       <label className="mem-upload-label">{label} <span className="req">*</span></label>
                       <p className="mem-upload-hint">{hint}</p>
                       <label className={`mem-upload-box${files[key] ? " selected" : ""}`}>
-                        <input type="file" name={key} accept=".pdf,.jpg,.jpeg,.png" onChange={handleFileChange} hidden disabled={step !== 3} />
+                        <input type="file" name={key} accept=".pdf,.jpg,.jpeg,.png,.docx" onChange={handleFileChange} hidden disabled={step !== 3} />
                         <span className="mem-up-icon">{icon}</span>
                         <span className="mem-up-text">{files[key] ? files[key].name : "Click to upload"}</span>
-                        <span className="mem-up-sub">PDF, JPG, PNG — max 5MB</span>
+                        <span className="mem-up-sub">PDF, JPG, PNG, DOCX — max 5MB</span>
                       </label>
                       {errors[key] && step === 3 && <span className="err-msg">{errors[key]}</span>}
                     </div>
