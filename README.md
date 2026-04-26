@@ -1,578 +1,512 @@
-# 🏥 Nexus Biomedical Research Foundation Trust (NBRF)
+# Nexus Biomedical Research Foundation Trust
 
-> A professional website for the Nexus Biomedical Research Foundation Trust - A national professional organization dedicated to the promotion of academics and research in medical sciences.
+A full-stack web platform for the Nexus Biomedical Research Foundation Trust. The project provides a public-facing organizational website, membership application system, contact enquiry flow, research and resource pages, blog content, committee details, media updates, and an email-driven backend workflow for membership administration.
 
-[Live Demo](#) | [Report Bug](https://github.com/yourusername/nbrf-website/issues) | [Request Feature](https://github.com/yourusername/nbrf-website/issues)
+> Live Site: `<add-live-url-here>`<br>
+> Repository: `<add-github-repository-url-here>`<br>
+> Maintainer: `<add-maintainer-name-here>`
 
 ---
 
-## 📋 Table of Contents
+## Table of Contents
 
-- [About the Project](#about-the-project)
-- [Key Features](#key-features)
+- [Project Overview](#project-overview)
+- [How the Project Works](#how-the-project-works)
+- [Features](#features)
 - [Tech Stack](#tech-stack)
-- [Getting Started](#getting-started)
-- [Project Structure](#project-structure)
+- [Folder Structure](#folder-structure)
+- [Environment Variables](#environment-variables)
+- [Local Setup](#local-setup)
 - [Available Scripts](#available-scripts)
-- [Deployment](#deployment)
-- [Contributing](#contributing)
-- [License](#license)
+- [API Overview](#api-overview)
+- [Security and Validation](#security-and-validation)
+- [Deployment Notes](#deployment-notes)
+- [Future Improvements](#future-improvements)
 - [Contact](#contact)
 
 ---
 
-## 🎯 About the Project
+## Project Overview
 
-The NBRF website serves as the digital presence for the Nexus Biomedical Research Foundation Trust, providing a comprehensive platform for toxicology professionals, researchers, and students. The website features modern design, smooth animations, and an intuitive user interface to showcase the foundation's mission, events, publications, and research initiatives.
+Nexus Biomedical Research Foundation Trust is designed as a professional digital platform for a biomedical research organization. It presents the trust's identity, objectives, leadership, research focus, collaborations, media updates, resources, journal information, and blog content in a structured website.
 
-### Purpose
+The project also includes a functional membership system. Visitors can apply for annual or lifetime membership through a multi-step form, upload required documents, agree to terms and privacy declarations, and submit the application to the backend. The backend stores application data in MongoDB, stores uploaded documents in Cloudinary, and uses email notifications to coordinate the membership approval and payment process.
 
-- Promote biomedical research and education in India
-- Provide a platform for knowledge exchange among professionals
-- Facilitate membership registration and event management
-- Showcase research publications and guidelines
-- Connect the toxicology community
+The application is split into two independent parts:
 
----
-
-## ✨ Key Features
-
-### 🎬 Hero Slider
-
-- **Smooth style transitions** - Professional crossfade animations (2s duration)
-- **Auto-rotating slides** - Changes every 5 seconds with subtle zoom effect
-- **Navigation controls** - Previous/Next arrows and dot indicators
-- **Responsive design** - Optimized for all screen sizes
-- **Text animations** - Fade-in-left effect for hero content
-
-### 📄 Core Pages
-
-- **Home** - Dynamic hero slider, about section, vision/mission, news & events
-- **About** - Organization history, objectives, and team information
-- **Mission & Vision** - Core values and strategic goals
-- **Committee** - Executive committee members and leadership
-- **Contact** - Contact form and office information
-
-### 🎨 Design Features
-
-- **Modern UI/UX** - Clean, professional design following current web standards
-- **Smooth Animations** - 60fps GPU-accelerated transitions
-- **Mobile-First** - Fully responsive across all devices
-- **Accessible** - WCAG 2.1 compliant with semantic HTML
-- **Fast Loading** - Optimized images and lazy loading
-
-### 🔧 Technical Features
-
-- **React Router** - Client-side routing for SPA experience
-- **Component-Based** - Reusable, modular components
-- **CSS Variables** - Easy theme customization
-- **Icon Library** - React Icons for scalable vector icons
-- **Cross-Browser** - Compatible with all modern browsers
+- `client/`: Vite + React frontend for the public website and forms.
+- `server/`: Express + MongoDB backend for APIs, email delivery, document uploads, membership workflow, and renewal reminders.
 
 ---
 
-## 🛠️ Tech Stack
+## How the Project Works
+
+### Visitor Website Flow
+
+Users browse the React frontend through public pages such as Home, About, Committee, Blog, Research, Collaborations, JAIRAM Journal, Resources, Media, Contact, and Membership. Routing is handled on the client side using React Router.
+
+### Contact Enquiry Flow
+
+1. A visitor submits the contact form from the Contact page.
+2. The frontend sends the enquiry to `POST /api/contact`.
+3. The backend applies rate limiting, sanitization, validation, and a honeypot check.
+4. Nodemailer sends the enquiry to the configured recipient email.
+5. The visitor receives a success or error response in the UI.
+
+### Membership Application Flow
+
+1. A visitor chooses Annual Membership or Lifetime Membership.
+2. The frontend collects personal, contact, professional, document, and consent details.
+3. The frontend sends the form data and files to `POST /api/membership/apply`.
+4. The backend validates fields, checks duplicate active applications, uploads documents to Cloudinary, and creates a MongoDB membership record.
+5. Email notifications are sent to the administrator and applicant.
+
+### Admin Approval and Payment Flow
+
+Membership administration is handled through signed email links:
+
+1. New applications start with status `pending`.
+2. Admin can approve or reject using secure tokenized email links.
+3. Approved applicants receive payment instructions.
+4. Applicant clicks the payment done link after completing payment.
+5. Admin receives a payment confirmation email link.
+6. Admin confirms payment, assigns a Membership ID, and the applicant receives the final membership confirmation email.
+
+### Membership Lifecycle
+
+The backend tracks membership status using these values:
+
+| Status | Meaning |
+| --- | --- |
+| `pending` | Application submitted and waiting for admin review. |
+| `approved` | Admin approved the application and payment instructions were sent. |
+| `rejected` | Admin rejected the application. |
+| `payment_initiated` | Applicant clicked the payment done link. |
+| `payment_confirmed` | Admin confirmed payment and issued a Membership ID. |
+
+### Renewal Reminder Flow
+
+The backend uses `node-cron` to run a daily renewal check at 09:00 AM IST. Annual members whose `paidAt` date matches the renewal window and who have not already received a reminder are sent a renewal reminder email.
+
+---
+
+## Features
+
+### Frontend Pages
+
+- Home page with hero visuals, important dates, and featured blog content.
+- About page with organizational background, objectives, founders, and legal details.
+- Committee page with executive committee and historical leadership information.
+- Blog listing and individual blog post pages.
+- Research page describing domains, methodology, ethics, facilities, and projects.
+- Collaborations page for institutional partnerships, MoUs, and funding opportunities.
+- JAIRAM Journal page for journal scope and focus areas.
+- Resources page for reports, concept notes, policies, and SOPs.
+- Media page for news, events, workshops, and gallery sections.
+- Contact page with contact details and enquiry form.
+- Membership landing page with annual and lifetime membership options.
+- Multi-step annual and lifetime membership application forms.
+
+### Backend Capabilities
+
+- Contact form API with rate limiting, validation, sanitization, and email delivery.
+- Membership application API with form validation and duplicate application checks.
+- Cloudinary document upload support for membership documents.
+- MongoDB persistence for membership records.
+- Email-based admin workflow for approval, rejection, payment initiation, and payment confirmation.
+- Signed admin links using HMAC tokens.
+- Background membership email dispatch so request responses are not blocked by email delivery.
+- Annual membership renewal reminder scheduler.
+- Health check endpoint for server availability.
+
+---
+
+## Tech Stack
 
 ### Frontend
 
-- **React** 18.0+ - JavaScript library for building user interfaces
-- **React Router DOM** 6.0+ - Declarative routing for React
-- **React Icons** 4.0+ - Popular icon library
-- **CSS3** - Modern styling with animations and transitions
+- React 19
+- Vite 7
+- React Router DOM 7
+- Axios
+- React Icons
+- Material UI and MUI Icons
+- CSS files for page and component styling
 
-### Development Tools
+### Backend
 
-- **Node.js** 18.0+ - JavaScript runtime
-- **npm** 9.0+ - Package manager
-- **Create React App** - Build toolchain
-- **Git** - Version control
+- Node.js
+- Express 5
+- Mongoose
+- MongoDB
+- Multer
+- Cloudinary
+- Nodemailer
+- node-cron
+- CORS
+- dotenv
+- express-rate-limit
 
-### Deployment
+### Tooling
 
-- **Vercel** / **Netlify** - Hosting platform (recommended)
-- **GitHub Pages** - Alternative hosting option
+- npm
+- ESLint
+- Nodemon
+- Vite build tooling
+- Git
 
 ---
 
-## 🚀 Getting Started
+## Folder Structure
+
+```text
+Nexus-Biomedical/
+├── README.md
+├── client/
+│   ├── index.html
+│   ├── package.json
+│   ├── vite.config.js
+│   ├── vercel.json
+│   ├── public/
+│   └── src/
+│       ├── api/
+│       │   └── membershipApi.js
+│       ├── assets/
+│       │   ├── Blog/
+│       │   ├── Committee/
+│       │   └── images and logos
+│       ├── components/
+│       │   ├── BlogCard/
+│       │   ├── Footer/
+│       │   └── Navbar/
+│       ├── data/
+│       │   └── blogData.js
+│       ├── pages/
+│       │   ├── About/
+│       │   ├── BlogPage/
+│       │   ├── BlogPostPage/
+│       │   ├── Collaborations/
+│       │   ├── Committee/
+│       │   ├── Contact/
+│       │   ├── Home/
+│       │   ├── JairamJournal/
+│       │   ├── Media/
+│       │   ├── Membership/
+│       │   ├── Research/
+│       │   └── Resources/
+│       ├── App.jsx
+│       ├── main.jsx
+│       └── index.css
+└── server/
+    ├── index.js
+    ├── package.json
+    ├── middleware/
+    │   ├── rateLimiter.js
+    │   ├── sanitizer.js
+    │   └── validator.js
+    ├── models/
+    │   └── Membership.js
+    ├── routes/
+    │   ├── email.js
+    │   └── membership.js
+    ├── services/
+    │   ├── mailService.js
+    │   └── membershipMailService.js
+    ├── uploads/
+    │   └── membership/
+    └── utils/
+        ├── adminToken.js
+        └── renewalScheduler.js
+```
+
+---
+
+## Environment Variables
+
+Create separate `.env` files for the frontend and backend. Do not commit real secrets.
+
+### Client `.env`
+
+```env
+VITE_API_URL=http://localhost:5000/api
+```
+
+### Server `.env`
+
+```env
+PORT=5000
+NODE_ENV=development
+
+MONGO_URI=mongodb+srv://<username>:<password>@<cluster>/<database>
+
+GMAIL_USER=<gmail-address>
+GMAIL_APP_PASSWORD=<gmail-app-password>
+RECIPIENT_EMAIL=<admin-recipient-email>
+
+CLOUDINARY_CLOUD_NAME=<cloudinary-cloud-name>
+CLOUDINARY_API_KEY=<cloudinary-api-key>
+CLOUDINARY_API_SECRET=<cloudinary-api-secret>
+
+SERVER_URL=http://localhost:5000
+ADMIN_TOKEN_SECRET=<long-random-secret>
+
+BANK_ACCOUNT_NAME=Nexus Biomedical Research Foundation Trust
+BANK_ACCOUNT_NO=<bank-account-number>
+BANK_IFSC=<bank-ifsc-code>
+UPI_ID=<upi-id>
+```
+
+Required server variables:
+
+- `MONGO_URI`
+- `GMAIL_USER`
+- `GMAIL_APP_PASSWORD`
+- `RECIPIENT_EMAIL`
+- `CLOUDINARY_CLOUD_NAME`
+- `CLOUDINARY_API_KEY`
+- `CLOUDINARY_API_SECRET`
+
+Required in production:
+
+- `SERVER_URL`
+- `ADMIN_TOKEN_SECRET`
+
+Optional payment variables:
+
+- `BANK_ACCOUNT_NAME`
+- `BANK_ACCOUNT_NO`
+- `BANK_IFSC`
+- `UPI_ID`
+
+---
+
+## Local Setup
 
 ### Prerequisites
 
-Before you begin, ensure you have the following installed:
+- Node.js
+- npm
+- MongoDB database connection string
+- Gmail app password for email delivery
+- Cloudinary account for document uploads
+
+### 1. Clone the Repository
 
 ```bash
-# Node.js (version 18.0 or higher)
-node --version
-
-# npm (version 9.0 or higher)
-npm --version
-
-# Git
-git --version
+git clone <add-github-repository-url-here>
+cd Nexus-Biomedical
 ```
 
-### Installation
-
-1. **Clone the repository**
+### 2. Install Frontend Dependencies
 
 ```bash
-git clone https://github.com/yourusername/nbrf-website.git
-cd nbrf-website
-```
-
-2. **Install dependencies**
-
-```bash
+cd client
 npm install
 ```
 
-3. **Add your images**
-
-Place your hero images in the `src/assets/` directory:
-
-```
-src/assets/
-├── hero-bg1.jpeg
-├── hero-bg2.jpg
-├── hero-bg3.jpg
-└── ... (other images)
-```
-
-4. **Start development server**
+### 3. Install Backend Dependencies
 
 ```bash
-npm start
+cd ../server
+npm install
 ```
 
-The application will open at `http://localhost:3000`
+### 4. Configure Environment Variables
 
----
+Create:
 
-## 📁 Project Structure
+- `client/.env`
+- `server/.env`
 
+Use the placeholder examples from the [Environment Variables](#environment-variables) section.
+
+### 5. Start the Backend
+
+```bash
+cd server
+npm run dev
 ```
-nbrf-website/
-├── public/
-│   ├── index.html              # HTML template
-│   ├── favicon.ico             # Site icon
-│   └── images/                 # Public images
-│
-├── src/
-│   ├── assets/                 # Image assets
-│   │   ├── hero-bg1.jpeg
-│   │   ├── hero-bg2.jpg
-│   │   └── hero-bg3.jpg
-│   │
-│   ├── components/             # Reusable components
-│   │   ├── Navbar.jsx          # Navigation bar
-│   │   ├── Navbar.css
-│   │   ├── Footer.jsx          # Footer component
-│   │   └── Footer.css
-│   │
-│   ├── pages/                  # Page components
-│   │   ├── Home.jsx            # Homepage
-│   │   ├── Home.css
-│   │   ├── About.jsx           # About page
-│   │   ├── Mission.jsx         # Mission & Vision
-│   │   ├── Committee.jsx       # Executive Committee
-│   │   ├── Contact.jsx         # Contact page
-│   │
-│   ├── styles/                 # Global styles
-│   │   └── global.css          # Global CSS variables
-│   │
-│   ├── App.jsx                 # Main app component
-│   ├── App.css                 # App styles
-│   ├── index.js                # Entry point
-│   └── index.css               # Base styles
-│
-├── .gitignore                  # Git ignore rules
-├── package.json                # Dependencies
-├── package-lock.json           # Dependency lock
-└── README.md                   # This file
+
+The backend runs on:
+
+```text
+http://localhost:5000
+```
+
+Health check:
+
+```text
+http://localhost:5000/health
+```
+
+### 6. Start the Frontend
+
+Open a second terminal:
+
+```bash
+cd client
+npm run dev
+```
+
+The frontend runs on the Vite development URL, usually:
+
+```text
+http://localhost:5173
 ```
 
 ---
 
-## 📜 Available Scripts
+## Available Scripts
 
-### Development
+### Client
 
 ```bash
-# Start development server
-npm start
-
-# Open at http://localhost:3000
-# Hot reload enabled
+npm run dev
 ```
 
-### Testing
+Starts the Vite development server.
 
 ```bash
-# Run test suite
-npm test
-
-# Run tests in watch mode
-npm test -- --watch
-```
-
-### Production Build
-
-```bash
-# Create optimized production build
 npm run build
-
-# Output in /build directory
 ```
 
-### Code Quality
+Builds the frontend for production.
 
 ```bash
-# Lint code
+npm run preview
+```
+
+Previews the production build locally.
+
+```bash
 npm run lint
-
-# Format code with Prettier
-npm run format
 ```
 
----
+Runs ESLint checks for the frontend.
 
-## 🎨 Customization
-
-### Colors
-
-Edit `src/styles/global.css`:
-
-```css
-:root {
-  --primary-color: #2c5f8d; /* Main brand color */
-  --secondary-color: #1a3a52; /* Dark accent */
-  --accent-color: #4a90c5; /* Light accent */
-  --text-dark: #333; /* Primary text */
-  --text-light: #666; /* Secondary text */
-  --bg-light: #f8f9fa; /* Light background */
-  --white: #ffffff; /* White */
-  --border-color: #e0e0e0; /* Border color */
-}
-```
-
-### Hero Slider Timing
-
-Edit `src/pages/Home.jsx`:
-
-```javascript
-// Change slide duration (default: 5000ms = 5 seconds)
-const interval = setInterval(() => {
-  setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
-}, 5000); // Change this value
-```
-
-Edit `src/pages/Home.css`:
-
-```css
-/* Change fade duration (default: 1s) */
-.hero-slide {
-  transition: opacity 1s ease-in-out;
-}
-
-/* Change animation duration (default: 0.8s) */
-.hero-text {
-  animation: fadeInLeft 0.8s ease;
-}
-```
-
-### Adding New Pages
-
-1. Create new component in `src/pages/`:
-
-```jsx
-// src/pages/NewPage.jsx
-import React from "react";
-import "./PageStyles.css";
-
-const NewPage = () => {
-  return (
-    <div className="page-container">
-      <h1>New Page</h1>
-    </div>
-  );
-};
-
-export default NewPage;
-```
-
-2. Add route in `src/App.jsx`:
-
-```jsx
-import NewPage from "./pages/NewPage";
-
-// Inside Routes component:
-<Route path="/new-page" element={<NewPage />} />;
-```
-
-3. Add navigation link in `src/components/Navbar.jsx`:
-
-```jsx
-<Link to="/new-page" className="nav-link">
-  New Page
-</Link>
-```
-
----
-
-## 🚀 Deployment
-
-### Deploy to Vercel (Recommended)
-
-1. **Install Vercel CLI**
+### Server
 
 ```bash
-npm i -g vercel
+npm run dev
 ```
 
-2. **Deploy**
+Starts the backend with Nodemon.
 
 ```bash
-vercel
-```
-
-3. **Follow prompts** to link your project
-
-### Deploy to Netlify
-
-1. **Build the project**
-
-```bash
-npm run build
-```
-
-2. **Deploy to Netlify**
-
-- Go to [netlify.com](https://netlify.com)
-- Drag & drop the `build` folder
-- Or use Netlify CLI:
-
-```bash
-npm install netlify-cli -g
-netlify deploy --prod
-```
-
-### Deploy to GitHub Pages
-
-1. **Install gh-pages**
-
-```bash
-npm install --save-dev gh-pages
-```
-
-2. **Add to package.json**
-
-```json
-{
-  "homepage": "https://yourusername.github.io/nbrf-website",
-  "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
-  }
-}
-```
-
-3. **Deploy**
-
-```bash
-npm run deploy
-```
-
----
-
-## 🌐 Browser Support
-
-| Browser | Version         |
-| ------- | --------------- |
-| Chrome  | Last 2 versions |
-| Firefox | Last 2 versions |
-| Safari  | Last 2 versions |
-| Edge    | Last 2 versions |
-| Opera   | Last 2 versions |
-
----
-
-## ⚡ Performance
-
-- **Lighthouse Score**: 95+/100
-- **First Contentful Paint**: < 1.5s
-- **Time to Interactive**: < 3.5s
-- **Speed Index**: < 2.5s
-- **Largest Contentful Paint**: < 2.5s
-
-### Optimization Tips
-
-1. **Image Optimization**
-
-   - Use WebP format when possible
-   - Compress images (TinyPNG, Squoosh)
-   - Recommended sizes:
-     - Hero images: 1920x1080px, < 500KB
-     - Thumbnails: 400x300px, < 100KB
-
-2. **Code Splitting**
-
-   - React Router automatically splits by routes
-   - Consider lazy loading for heavy components
-
-3. **Caching**
-   - Service workers for PWA (optional)
-   - Browser caching headers
-   - CDN for static assets
-
----
-
-## 🤝 Contributing
-
-Contributions are what make the open source community amazing! Any contributions you make are **greatly appreciated**.
-
-### How to Contribute
-
-1. **Fork the Project**
-2. **Create your Feature Branch** (`git checkout -b feature/AmazingFeature`)
-3. **Commit your Changes** (`git commit -m 'Add some AmazingFeature'`)
-4. **Push to the Branch** (`git push origin feature/AmazingFeature`)
-5. **Open a Pull Request**
-
-### Coding Standards
-
-- Use ESLint configuration
-- Follow React best practices
-- Write meaningful commit messages
-- Comment complex logic
-- Update documentation
-
----
-
-## 📝 License
-
-Distributed under the MIT License. See `LICENSE` file for more information.
-
----
-
-## 📧 Contact
-
-**Nexus Biomedical Research Foundation Trust**
-
-- **Website**: [https://nbrf-website.com](https://nbrf-website.com)
-- **Email**: info@nbrf.org
-- **Phone**: +91 123 456 7890
-- **Address**: New Delhi, India
-
-**Project Maintainer**
-
-- **Name**: Your Name
-- **Email**: your.email@example.com
-- **GitHub**: [@yourusername](https://github.com/yourusername)
-- **LinkedIn**: [Your Name](https://linkedin.com/in/yourprofile)
-
----
-
-## 🙏 Acknowledgments
-
-- [React](https://reactjs.org/) - JavaScript library
-- [React Router](https://reactrouter.com/) - Routing library
-- [React Icons](https://react-icons.github.io/react-icons/) - Icon library
-- [Unsplash](https://unsplash.com/) - Free stock photos
-- [Font Awesome](https://fontawesome.com/) - Icon resources
-- [Google Fonts](https://fonts.google.com/) - Web fonts
-
----
-
-## 📊 Project Status
-
-- ✅ **Phase 1**: Core website development - **Completed**
-- 🚧 **Phase 2**: Backend integration - **In Progress**
-- 📅 **Phase 3**: Member portal - **Planned**
-- 📅 **Phase 4**: JIST Journal platform - **Planned**
-
----
-
-## 📸 Screenshots
-
-### Homepage
-
-![Homepage](screenshots/homepage.png)
-
-### About Page
-
-![About](screenshots/about.png)
-
-### Events Page
-
-![Events](screenshots/events.png)
-
----
-
-## 🔧 Troubleshooting
-
-### Common Issues
-
-**Issue: Images not loading**
-
-```bash
-# Check image paths in src/assets/
-# Verify imports in component files
-# Clear cache: Ctrl+Shift+R (Windows) or Cmd+Shift+R (Mac)
-```
-
-**Issue: Styles not applying**
-
-```bash
-# Verify CSS imports
-# Check for typos in class names
-# Restart development server
 npm start
 ```
 
-**Issue: Routing not working after deployment**
+Starts the backend with Node.
+
+---
+
+## API Overview
+
+### General
+
+| Method | Endpoint | Description |
+| --- | --- | --- |
+| `GET` | `/health` | Checks whether the backend is running. |
+
+### Contact
+
+| Method | Endpoint | Description |
+| --- | --- | --- |
+| `POST` | `/api/contact` | Receives contact form enquiries and sends email notifications. |
+
+### Membership
+
+| Method | Endpoint | Description |
+| --- | --- | --- |
+| `POST` | `/api/membership/apply` | Submits an annual or lifetime membership application with documents. |
+| `GET` | `/api/membership/approve/:id` | Admin approval link from email. Requires signed token query parameter. |
+| `GET` | `/api/membership/reject/:id` | Admin rejection link from email. Requires signed token query parameter. |
+| `GET` | `/api/membership/payment-done/:id` | Applicant link to notify that payment has been completed. |
+| `GET` | `/api/membership/confirm-payment/:id` | Admin page for confirming payment and assigning Membership ID. Requires signed token query parameter. |
+| `POST` | `/api/membership/confirm-payment/:id` | Admin submission for final payment confirmation and Membership ID issue. Requires signed token query parameter. |
+
+### Legacy Upload Access
+
+| Method | Endpoint | Description |
+| --- | --- | --- |
+| `GET` | `/uploads/membership/:filename` | Serves older local membership uploads with token validation. Current records use Cloudinary metadata. |
+
+---
+
+## Security and Validation
+
+- Backend validates required membership fields before database insertion.
+- Membership email addresses, phone numbers, WhatsApp numbers, and PIN codes are checked before submission is accepted.
+- Membership application files are limited to 5 MB each.
+- Accepted file types are `.pdf`, `.jpg`, `.jpeg`, `.png`, and `.docx`.
+- Contact form requests use rate limiting, sanitization, validation, and a honeypot field.
+- Admin approval, rejection, and payment confirmation links use HMAC-based signed tokens.
+- Production requires `ADMIN_TOKEN_SECRET` to avoid insecure token generation.
+- CORS is restricted to known frontend origins and configured server URL.
+- Email sending failures are logged without blocking completed membership database actions.
+
+---
+
+## Deployment Notes
+
+### Frontend
+
+The frontend can be deployed to platforms such as Vercel, Netlify, or any static hosting provider that supports Vite builds.
+
+Build command:
 
 ```bash
-# Add _redirects file in public folder:
-echo "/*    /index.html   200" > public/_redirects
-```
-
-**Issue: Build fails**
-
-```bash
-# Clear node_modules and reinstall
-rm -rf node_modules package-lock.json
-npm install
 npm run build
 ```
 
+Output directory:
+
+```text
+client/dist
+```
+
+Set `VITE_API_URL` to the deployed backend API base URL.
+
+### Backend
+
+The backend can be deployed to a Node.js hosting provider. Configure all required environment variables in the hosting dashboard.
+
+Production notes:
+
+- Set `NODE_ENV=production`.
+- Set `SERVER_URL` to the deployed backend URL.
+- Set a strong `ADMIN_TOKEN_SECRET`.
+- Ensure MongoDB, Gmail app password, and Cloudinary credentials are valid.
+- Confirm the deployed frontend origin is allowed by backend CORS settings.
+
 ---
 
-## 📚 Documentation
+## Future Improvements
 
-For detailed documentation, visit:
-
-- [Component Documentation](docs/COMPONENTS.md)
-- [Styling Guide](docs/STYLING.md)
-- [API Integration](docs/API.md)
-- [Deployment Guide](docs/DEPLOYMENT.md)
-
----
-
-## 🎓 Learning Resources
-
-- [React Documentation](https://react.dev/)
-- [React Router Tutorial](https://reactrouter.com/en/main/start/tutorial)
-- [CSS Animations Guide](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Animations)
-- [Web Performance Best Practices](https://web.dev/performance/)
+- Add a dedicated admin dashboard instead of email-only membership administration.
+- Add authentication and role-based access control for admin actions.
+- Add automated tests for membership lifecycle and contact form workflows.
+- Add payment gateway integration for direct online payments.
+- Add CMS support for blogs, resources, media updates, and journal content.
+- Add richer audit logs for membership status changes.
+- Add email retry queue for failed email delivery.
 
 ---
 
-<div align="center">
+## Contact
 
-**Made with ❤️ by the NBRF Team**
+Organization: Nexus Biomedical Research Foundation Trust<br>
+Website: `<add-website-url-here>`<br>
+Email: `<add-public-contact-email-here>`<br>
+Phone: `<add-phone-number-here>`<br>
+Address: `<add-office-address-here>`
 
-**⭐ Star this repository if you find it helpful!**
+Project Maintainer: `<add-maintainer-name-here>`<br>
+GitHub: `<add-github-profile-or-repo-url-here>`<br>
+LinkedIn: `<add-linkedin-url-here>`
 
-[Back to Top ↑](#-nexus-biomedical-research-foundation-trust-nbrf)
+---
 
-</div>
+## Project Status
+
+The project currently includes a working public frontend, contact form API, membership application API, Cloudinary document upload flow, email-based membership administration, and annual renewal reminder scheduling.
