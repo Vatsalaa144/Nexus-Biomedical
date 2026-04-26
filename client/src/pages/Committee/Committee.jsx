@@ -1,12 +1,16 @@
 import React from "react";
 import "./Committee.css";
 
-// placeholder images - actual images
+// Leadership photos
 import presidentPhoto from "../../assets/Committee/president.jpeg";
 import vicePresidentPhoto from "../../assets/Committee/vicePresident.jpeg";
 import secretaryPhoto from "../../assets/Committee/secretary.jpeg";
 import jointSecretaryPhoto from "../../assets/Committee/jointSecretary.jpeg";
 import treasurerPhoto from "../../assets/Committee/treasurer.jpeg";
+
+// Officio member photos
+import rohitPhoto from "../../assets/Committee/officioMember1.jpeg";
+import rakhiPhoto from "../../assets/Committee/officioMember2.jpeg";
 
 export const Committee = () => {
   const committeeMembers = [
@@ -56,8 +60,17 @@ export const Committee = () => {
   // Officio Members
   const officioMembers = [
     {
+      name: "Mr. Rohit Kumar Singh",
+      photo: rohitPhoto,
+      designation: "Scientist C",
+      department: "Department of Public Health",
+      institution:
+        "Kalyan Singh Super Speciality Cancer Institute, Lucknow, India",
+    },
+    {
       name: "Miss. Rakhi Rajput",
-      designation: "Senior Research fellow",
+      photo: rakhiPhoto,
+      designation: "Senior Research Fellow",
       department: "Department of Forensic Medicine and Toxicology",
       institution: "King George's Medical University Lucknow, India.",
     },
@@ -76,7 +89,22 @@ export const Committee = () => {
   // Handle image error for committee members
   const handleImageError = (e, name) => {
     e.target.onerror = null;
-    e.target.src = createInitialImage(name);
+    // Show initial letter as fallback
+    const canvas = document.createElement("canvas");
+    canvas.width = 200;
+    canvas.height = 200;
+    const ctx = canvas.getContext("2d");
+    ctx.fillStyle = "#2c5f8d";
+    ctx.fillRect(0, 0, 200, 200);
+    ctx.fillStyle = "white";
+    ctx.font = "bold 80px Segoe UI, sans-serif";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    const initial = name.split(" ").find(
+      (p) => p.length > 2 && p !== "Dr." && p !== "Mr." && p !== "Miss."
+    ) || name.charAt(0);
+    ctx.fillText(initial.charAt(0), 100, 100);
+    e.target.src = canvas.toDataURL();
   };
 
   return (
@@ -127,7 +155,7 @@ export const Committee = () => {
                         />
                       ) : (
                         <div className="committee-member-photo-initial">
-                          {getFirstLetter(member.name)}
+                          {member.name.charAt(0)}
                         </div>
                       )}
                     </div>
@@ -154,7 +182,7 @@ export const Committee = () => {
         <section className="committee-section officio-section">
           <div className="committee-content-section">
             <h2 className="committee-main-heading">
-              Officio Members & Advisors
+              Officio Members &amp; Advisors
             </h2>
             <p className="committee-intro">
               Our Officio Members and Advisors bring diverse expertise from
@@ -165,23 +193,42 @@ export const Committee = () => {
             </p>
           </div>
 
-          <div className="officio-members-container">
+          {/* Officio members reuse the same card layout as leadership */}
+          <div className="committee-lists-container">
             {officioMembers.map((member, index) => (
               <div
                 key={index}
-                className="officio-member-card committee-animate-fade-in"
+                className="committee-category committee-animate-fade-in"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
-                <div className="officio-member-info">
-                  <h3 className="officio-member-name">{member.name}</h3>
-                  <div className="officio-member-designation">
-                    {member.designation}
-                  </div>
-                  <div className="officio-member-department">
-                    {member.department}
-                  </div>
-                  <div className="officio-member-institution">
-                    {member.institution}
+                <div className="committee-member-cards">
+                  <div className="committee-member-card">
+                    <div className="committee-member-photo-container">
+                      {member.photo ? (
+                        <img
+                          src={member.photo}
+                          alt={member.name}
+                          className="committee-member-photo"
+                          onError={(e) => handleImageError(e, member.name)}
+                        />
+                      ) : (
+                        <div className="committee-member-photo-initial">
+                          {member.name.charAt(0)}
+                        </div>
+                      )}
+                    </div>
+                    <div className="committee-member-info">
+                      <div className="committee-member-name">{member.name}</div>
+                      <div className="committee-member-designation">
+                        {member.designation}
+                      </div>
+                      <div className="committee-member-department">
+                        {member.department}
+                      </div>
+                      <div className="committee-member-institution">
+                        {member.institution}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
