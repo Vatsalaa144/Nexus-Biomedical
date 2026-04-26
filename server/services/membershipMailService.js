@@ -50,16 +50,24 @@ const emailWrapper = (headerTitle, headerSub, bodyHtml) => `
     </div>
   </div>`;
 
+const documentUrl = (document, memberId, token) => {
+  if (document?.url) return document.url;
+  if (!document) return "#";
+
+  const SERVER_URL = getServerUrl();
+  return `${SERVER_URL}/uploads/membership/${encodeURIComponent(document)}?id=${memberId}&token=${token}`;
+};
+
 // ─────────────────────────────────────────────────────────────────────────────
 // EMAIL 1 — Admin: new application alert with Approve / Reject buttons
 // ─────────────────────────────────────────────────────────────────────────────
 const sendAdminApplicationAlert = async (transporter, member) => {
-  const SERVER_URL = getServerUrl();
   const token = generateToken(member._id);
 
-  const govtIdUrl = `${SERVER_URL}/uploads/membership/${member.documents.govtId}?id=${member._id}&token=${token}`;
-  const qualificationUrl = `${SERVER_URL}/uploads/membership/${member.documents.qualificationProof}?id=${member._id}&token=${token}`;
-  const designationUrl = `${SERVER_URL}/uploads/membership/${member.documents.designationProof}?id=${member._id}&token=${token}`;
+  const SERVER_URL = getServerUrl();
+  const govtIdUrl = documentUrl(member.documents.govtId, member._id, token);
+  const qualificationUrl = documentUrl(member.documents.qualificationProof, member._id, token);
+  const designationUrl = documentUrl(member.documents.designationProof, member._id, token);
   const approveUrl = `${SERVER_URL}/api/membership/approve/${member._id}?token=${token}`;
   const rejectUrl = `${SERVER_URL}/api/membership/reject/${member._id}?token=${token}`;
 

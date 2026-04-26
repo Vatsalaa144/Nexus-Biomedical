@@ -33,11 +33,12 @@ const membershipSchema = new mongoose.Schema(
     registrationNo:  { type: String, required: true },
     orcidId:         { type: String, default: "" },
 
-    // ── Document file paths ───────────────────────────────────────────────────
+    // ── Membership documents ──────────────────────────────────────────────────
+    // New records store Cloudinary metadata objects; old records may still store local filenames.
     documents: {
-      govtId:             { type: String, required: true },
-      qualificationProof: { type: String, required: true },
-      designationProof:   { type: String, required: true },
+      govtId:             { type: mongoose.Schema.Types.Mixed, required: true },
+      qualificationProof: { type: mongoose.Schema.Types.Mixed, required: true },
+      designationProof:   { type: mongoose.Schema.Types.Mixed, required: true },
     },
 
     // ── Application lifecycle ─────────────────────────────────────────────────
