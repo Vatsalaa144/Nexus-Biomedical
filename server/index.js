@@ -116,7 +116,7 @@ app.use("/api", emailRoute);
 app.use("/api/membership", membershipRoute);
 
 // ── Health Check ─────────────────────────────────────────────
-app.get("/health", (req, res) => {
+app.get("/api/health", (req, res) => {
   res.status(200).json({
     status: "OK",
     message: "Nexus Biomedical server is running",
