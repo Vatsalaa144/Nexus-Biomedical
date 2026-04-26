@@ -10,10 +10,11 @@ import hero_bg2 from "../../assets/hero-bg2.jpg";
 import hero_bg3 from "../../assets/hero-bg3.jpg";
 import hero_bg4 from "../../assets/hero-bg4.jpg";
 import hero_bg5 from "../../assets/hero-bg5.jpg";
+import axios from "axios"
 
 const Home = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
-
+  const API_BASE = import.meta.env.VITE_API_URL;
   // Get only first 3 blogs for homepage
   const featuredBlogs = blogData.slice(0, 3);
 
@@ -59,6 +60,20 @@ const Home = () => {
     setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
   };
 
+  useEffect(() => {
+    const healthCheck = async () => {
+      try {
+        await axios.get(`${API_BASE}/health`, {
+          timeout: 55000, // 55 seconds
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    healthCheck();
+  }, []);
+
   return (
     <div className="home-page">
       {/* Hero Slider Section  */}
@@ -66,9 +81,8 @@ const Home = () => {
         {heroSlides.map((slide, index) => (
           <div
             key={index}
-            className={`home-hero-slide ${
-              index === currentSlide ? "active" : ""
-            }`}
+            className={`home-hero-slide ${index === currentSlide ? "active" : ""
+              }`}
             style={{ backgroundImage: `url(${slide.image})` }}
           >
             <div className="home-hero-overlay"></div>
