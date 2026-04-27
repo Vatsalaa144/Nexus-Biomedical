@@ -1,5 +1,6 @@
 import React from "react";
 import "./JairamJournal.css";
+import Logo from "../../assets/logo.jpg";
 
 const scopeAreas = [
   {
@@ -46,29 +47,34 @@ const JairamJournal = () => {
     <div className="journal-page-container">
       {/* Banner */}
       <div className="journal-page-title">
-        <div className="journal-banner-badge">Official Publication — NEXUS Trust</div>
+        <div className="journal-banner-badge">
+          Official Publication — NEXUS Trust
+        </div>
         <h1>Journal of Advanced &amp; Integrated Research in Acute Medicine</h1>
-       
+
         <p>
           A peer-reviewed, open-access platform publishing high-quality research
-          in emergency medicine, clinical sciences, and interdisciplinary healthcare.
+          in emergency medicine, clinical sciences, and interdisciplinary
+          healthcare.
         </p>
       </div>
 
       <div className="journal-container">
         {/* About Card */}
         <div className="journal-about-card">
-          <div className="journal-about-icon">📋</div>
+          <div className="journal-about-icon">
+            <img src={Logo} alt="JAIRAM Logo" className="journal-about-logo" />
+          </div>
           <div className="journal-about-text">
             <h2>About JAIRAM</h2>
             <p>
-              JAIRAM is the official journal of NEXUS Biomedical Research Foundation
-              Trust, dedicated to advancing knowledge in acute and emergency medicine.
-              It provides a rigorous academic platform for clinicians, researchers,
-              and forensic scientists to publish impactful, evidence-based research
-              that improves patient care and strengthens medico-legal systems.
+              JAIRAM is the official journal of NEXUS Biomedical Research
+              Foundation Trust, dedicated to advancing knowledge in acute and
+              emergency medicine. It provides a rigorous academic platform for
+              clinicians, researchers, and forensic scientists to publish
+              impactful, evidence-based research that improves patient care and
+              strengthens medico-legal systems.
             </p>
-           
           </div>
         </div>
 
@@ -105,7 +111,9 @@ const JairamJournal = () => {
               <li>Original research articles, reviews, and case reports</li>
               <li>Manuscripts submitted in English (APA / Vancouver style)</li>
               <li>Strict double-blind peer review process</li>
-              <li>Ethical clearance certificate required for clinical studies</li>
+              <li>
+                Ethical clearance certificate required for clinical studies
+              </li>
               <li>Plagiarism check mandatory — below 15% similarity</li>
             </ul>
           </div>
