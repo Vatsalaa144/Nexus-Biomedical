@@ -5,6 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;   /* ADD: prevents body from scrolling horizontally */
 }
 
 code {
@@ -13,11 +14,11 @@ code {
 }
 
 html {
-  overflow-x: auto;
+  overflow-x: hidden;   /* CHANGED: was 'auto' — that was enabling the scroll */
   overflow-y: auto;
   scrollbar-width: none;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-   scroll-behavior: smooth; 
+  scroll-behavior: smooth;
 }

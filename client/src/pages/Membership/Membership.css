@@ -818,24 +818,128 @@
 .mem-slide-back    { animation: mem-slideInFromLeft  0.3s cubic-bezier(0.25,0.46,0.45,0.94) both; }
 
 /* ════════════════════════════
-   RESPONSIVE
+   RESPONSIVE BREAKPOINTS
    ════════════════════════════ */
+
+/* Tablet */
 @media (max-width: 820px) {
-  .mem-grid-layout { grid-template-columns: 1fr; gap: 14px; }
+  .mem-grid-layout {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
   .mem-step-card,
   .mem-step-card.active,
   .mem-step-card.mem-cs-active {
     min-height: auto;
     transform: none;
   }
-  .mem-upload-grid { grid-template-columns: 1fr; }
-  .mem-hero-title { font-size: 1.55rem; }
-  .mem-hero-banner { padding: 32px 20px; }
-  .mem-hero-meta { flex-direction: column; gap: 10px; }
-  .mem-container { padding: 0 14px 44px; margin-top: 24px; }
-  .mem-progress-line, .mem-step-connector { width: 24px; }
+  .mem-step-card.active:hover,
+  .mem-step-card.mem-cs-active:hover,
+  .mem-step-card.done:hover,
+  .mem-step-card.mem-cs-done:hover {
+    transform: none;
+  }
+  .mem-hero-banner { padding: 28px 16px; }
+  .mem-hero-meta { flex-direction: column; gap: 8px; }
+  .mem-container { padding: 0 12px 44px; margin-top: 20px; }
 }
-@media (max-width: 480px) {
-  .mem-grid { grid-template-columns: 1fr; }
-  .mem-modal { padding: 24px 18px 20px; }
+
+/* Mobile */
+@media (max-width: 600px) {
+  .mem-grid {
+    grid-template-columns: 1fr;
+  }
+  .mem-upload-grid {
+    grid-template-columns: 1fr;
+  }
+  .mem-card-body {
+    padding: 14px 16px 16px;
+  }
+  .mem-card-header {
+    padding: 14px 16px 12px;
+    gap: 10px;
+  }
+  .mem-card-nav {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .mem-btn-confirm,
+  .mem-btn-back,
+  .mem-btn-next {
+    width: 100%;
+    justify-content: center;
+  }
+  .mem-modal {
+    padding: 20px 16px 18px;
+    border-radius: 14px;
+  }
+  .mem-modal-actions {
+    flex-direction: column;
+  }
+  .mem-modal-back,
+  .mem-modal-confirm {
+    width: 100%;
+    text-align: center;
+  }
+
+  /* ── Progress track fix ── */
+  .mem-progress-track,
+  .mem-progress {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px 0;
+    margin-bottom: 20px;
+  }
+  .mem-progress-line,
+  .mem-step-connector {
+    width: 20px;
+  }
+  .mem-progress-label,
+  .mem-step-label {
+    font-size: 0.60rem;
+    letter-spacing: 0.2px;
+  }
+  .mem-progress-dot,
+  .mem-step-circle {
+    width: 24px;
+    height: 24px;
+    font-size: 0.65rem;
+  }
+
+  /* ── Hero ── */
+  .mem-hero-title {
+    font-size: 1.3rem;
+  }
+
+  /* ── Container ── */
+  .mem-container {
+    padding: 0 10px 44px;
+    margin-top: 16px;
+  }
+}
+
+/* Small mobile */
+@media (max-width: 400px) {
+  .mem-hero-title { font-size: 1.15rem; }
+  .mem-hero-pill  { font-size: 0.68rem; padding: 5px 12px; }
+  .mem-card-title { font-size: 0.88rem; }
+  .mem-field input,
+  .mem-field select { font-size: 0.85rem; min-height: 42px; }
+  .mem-container { padding: 0 10px 36px; }
+
+  /* ── Progress track — extra small ── */
+  .mem-progress-line,
+  .mem-step-connector {
+    width: 12px;
+  }
+  .mem-progress-label,
+  .mem-step-label {
+    font-size: 0.55rem;
+  }
+  .mem-progress-dot,
+  .mem-step-circle {
+    width: 22px;
+    height: 22px;
+    font-size: 0.60rem;
+  }
 }
