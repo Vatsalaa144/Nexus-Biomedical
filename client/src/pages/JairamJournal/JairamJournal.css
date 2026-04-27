@@ -141,24 +141,6 @@
 .journal-stat-card:nth-child(3) { animation-delay: 0.15s; }
 .journal-stat-card:nth-child(4) { animation-delay: 0.20s; }
 
-.journal-about-icon {
-  width: 90px;
-  height: 90px;
-  border-radius: 20px;
-  background: transparent;      /* ← remove dark gradient bg */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  overflow: hidden;
-}
-
-.journal-about-logo {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
 .journal-stat-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 14px 35px rgba(44, 95, 141, 0.12);
