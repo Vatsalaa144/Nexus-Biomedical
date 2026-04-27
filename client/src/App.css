@@ -3,6 +3,12 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  max-width: 100%;       /* ADD: prevents any element from being wider than viewport */
+}
+
+/* exceptions — elements that legitimately need unrestricted width */
+img, video, canvas, svg, iframe, table {
+  max-width: 100%;
 }
 
 :root {
@@ -23,6 +29,7 @@ body {
   line-height: 1.6;
   color: var(--text-dark);
   background-color: var(--white);
+  overflow-x: hidden;
 }
 
 /* Container */
@@ -30,12 +37,15 @@ body {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
+  width: 100%;           /* ADD: ensures it never exceeds viewport */
 }
 
 /* Main Content */
 .main-content {
   min-height: calc(100vh - 80px - 200px);
   margin-top: 80px;
+  overflow-x: hidden;    /* ADD: catches any child overflow */
+  width: 100%;
 }
 
 /* Page Title */
@@ -49,6 +59,7 @@ body {
   );
   color: var(--white);
   margin-bottom: 50px;
+  width: 100%;
 }
 
 .page-title h1 {
@@ -150,18 +161,10 @@ body {
 }
 
 /* Responsive Typography */
-h1 {
-  font-size: 2.5rem;
-}
-h2 {
-  font-size: 2rem;
-}
-h3 {
-  font-size: 1.5rem;
-}
-h4 {
-  font-size: 1.25rem;
-}
+h1 { font-size: 2.5rem; }
+h2 { font-size: 2rem; }
+h3 { font-size: 1.5rem; }
+h4 { font-size: 1.25rem; }
 
 /* Responsive Design */
 @media (max-width: 768px) {
@@ -169,36 +172,52 @@ h4 {
     margin-top: 70px;
   }
 
+  .page-title {
+    padding: 40px 15px 30px;
+  }
+
   .page-title h1 {
     font-size: 2rem;
+  }
+
+  .page-title p {
+    font-size: 1rem;
   }
 
   .section-title {
     font-size: 1.5rem;
   }
 
-  h1 {
-    font-size: 2rem;
-  }
-  h2 {
-    font-size: 1.5rem;
-  }
-  h3 {
-    font-size: 1.25rem;
-  }
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.5rem; }
+  h3 { font-size: 1.25rem; }
 
   .grid {
     gap: 20px;
+  }
+
+  /* Prevent wide grids from overflowing */
+  .grid-2,
+  .grid-3 {
+    grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: 480px) {
   .container {
-    padding: 0 15px;
+    padding: 0 12px;
   }
 
   .btn {
     padding: 10px 20px;
     font-size: 0.9rem;
   }
+
+  .page-title h1 {
+    font-size: 1.6rem;
+  }
+
+  h1 { font-size: 1.6rem; }
+  h2 { font-size: 1.3rem; }
+  h3 { font-size: 1.1rem; }
 }

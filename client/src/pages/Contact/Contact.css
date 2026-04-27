@@ -380,23 +380,33 @@
   .contact-main-container {
     flex-direction: column;
     align-items: center;
+    padding: 0 15px;
+  }
+
+  .contact-main-content {
+    flex-direction: column;  /* Stack cards vertically */
+    align-items: center;
   }
 
   .contact-cards-container {
     margin-right: 0;
     width: 100%;
-  }
-
-  .contact-cards-container,
-  .contact-form-column {
-    width: 100%;
-    max-width: 400px;
+    flex-direction: column;
+    align-items: center;
   }
 
   .contact-executive-card,
   .contact-editorial-card {
-    margin-top: 0;
-    height: auto;
+    margin-top: 0;        /* Remove the 100px top margin */
+    height: auto;         /* Remove fixed height */
+    width: 100%;          /* Fill container */
+    max-width: 420px;
+  }
+
+  .contact-form-column {
+    width: 100%;
+    max-width: 420px;
+    min-width: unset;
   }
 
   .contact-card-content,
