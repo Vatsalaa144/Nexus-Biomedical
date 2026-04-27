@@ -134,7 +134,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: top;
+
   transition: transform 0.5s ease;
 }
 
@@ -329,7 +329,7 @@
 }
 
 @media (max-width: 768px) {
-   .committee-page-title h1 {
+  .committee-page-title h1 {
     font-size: 2rem;
   }
 
@@ -343,9 +343,14 @@
   }
 
   .committee-category {
-    padding:40px 0;
+    padding: 40px 0;
   }
 
+  .committee-member-photo {
+    object-fit: contain; /* ← show full image, no crop */
+    object-position: center;
+    background-color: white; /* ← fills empty space around image */
+  }
   .committee-member-photo-container {
     width: 100%;
     height: 280px;
@@ -389,7 +394,11 @@
   .committee-role-heading {
     font-size: 1.3rem;
   }
-
+  .committee-member-photo {
+    object-fit: contain; /* ← show full image, no crop */
+    object-position: center;
+    background-color: white; /* ← fills empty space around image */
+  }
   .committee-member-photo-container {
     width: 100%;
     height: 240px;
@@ -418,8 +427,6 @@
     font-size: 0.9rem;
   }
 }
-
-
 
 /* Committee Member Initial Placeholder */
 .committee-member-photo-initial,
