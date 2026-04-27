@@ -123,7 +123,7 @@ const Navbar = () => {
 
           {/* Mobile Menu Toggle Button */}
           <button
-            className="menu-toggle"
+            className={`menu-toggle ${isOpen ? "menu-toggle--open" : ""}`}
             onClick={toggleMenu}
             aria-label="Toggle menu"
           >
