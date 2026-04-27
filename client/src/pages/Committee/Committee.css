@@ -329,11 +329,7 @@
 }
 
 @media (max-width: 768px) {
-  .committee-page-title {
-    padding: 0;
-  }
-
-  .committee-page-title h1 {
+   .committee-page-title h1 {
     font-size: 2rem;
   }
 
@@ -347,7 +343,7 @@
   }
 
   .committee-category {
-    padding: 25px;
+    padding:40px 0;
   }
 
   .committee-member-photo-container {
