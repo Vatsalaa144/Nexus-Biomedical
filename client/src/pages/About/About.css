@@ -371,6 +371,16 @@
   overflow: hidden;
   transition: box-shadow 0.32s ease, transform 0.28s ease;
 }
+/* ===== FOUNDER DP ===== */
+.about-founder-dp {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: top;
+  border: 3px solid #2c5f8d;
+  flex-shrink: 0;
+}
 
 .about-founders-section::before {
   content: "";
