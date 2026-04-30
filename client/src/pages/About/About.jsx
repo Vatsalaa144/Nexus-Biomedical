@@ -48,7 +48,6 @@ const About = () => {
       </div>
 
       <div className="about-container">
-
         {/* ── Who We Are ── */}
         <div className="about-content-section">
           <h2>Who We Are</h2>
@@ -56,16 +55,23 @@ const About = () => {
             NEXUS Biomedical Research Foundation Trust academic and research
             organization dedicated to advancing biomedical sciences and
             improving healthcare outcomes through ethical, evidence-based
-            research. The Trust promotes excellence in clinical medicine,
-            emergency medicine, forensic medicine, toxicology, public health,
-            and allied health sciences. It serves as a platform for
+            research. The Trust promotes excellence across the entire continuum
+            of medical, diagnostic, and allied health sciences, encompassing all
+            clinical, pre-clinical, and para-clinical specialties,
+            super-specialties, and emerging interdisciplinary domains including
+            clinical medicine, emergency and critical care, forensic medicine
+            and toxicology, public health, epidemiology, biomedical and
+            translational research, laboratory sciences, digital and precision
+            medicine, environmental and occupational health, healthcare
+            management, and other allied and integrative health sciences, along
+            with surgery and its super-specialties. It serves as a platform for
             high-quality research, academic publishing, and interdisciplinary
-            collaboration.Committed to scientific integrity and innovation,
-            the Trust supports researchers, clinicians, and academicians in
+            collaboration.Committed to scientific integrity and innovation, the
+            Trust supports researchers, clinicians, and academicians in
             generating impactful knowledge. Through research, training, and
-            scholarly dissemination, NEXUS Biomedical Research Foundation
-            Trust aims to contribute meaningfully to medical advancement and
-            the betterment of global health.
+            scholarly dissemination, NEXUS Biomedical Research Foundation Trust
+            aims to contribute meaningfully to medical advancement and the
+            betterment of global health.
           </p>
         </div>
 
@@ -188,10 +194,10 @@ const About = () => {
               <div>
                 <h3>Vision</h3>
                 <p>
-                  A globally recognized center of excellence in forensic and
-                  biomedical research, driving innovation, strengthening
-                  medico-legal systems, and improving population health through
-                  scientific rigor.
+                  To be a globally recognized center of excellence in biomedical
+                  research and healthcare innovation, advancing knowledge across
+                  all medical and allied sciences to improve human health and
+                  societal well-being.
                 </p>
               </div>
             </div>
@@ -201,10 +207,10 @@ const About = () => {
               <div>
                 <h3>Mission</h3>
                 <p>
-                  Conduct ethical, high-quality biomedical and forensic research;
-                  integrate AI into healthcare frameworks; drive evidence-based
-                  policy; build global collaborations; and promote capacity
-                  building and scientific dissemination.
+                  Conduct ethical, high-quality biomedical and forensic
+                  research; integrate AI into healthcare frameworks; drive
+                  evidence-based policy; build global collaborations; and
+                  promote capacity building and scientific dissemination.
                 </p>
               </div>
             </div>
@@ -219,7 +225,11 @@ const About = () => {
 
           <div className="about-founders-grid">
             <div className="about-founder-card">
-              <div className="about-founder-diamond">🔷</div>
+              <img
+                src="/src/assets/Committee/president.jpeg"
+                alt="Dr. Rajiv Ratan Singh Yadav"
+                className="about-founder-dp"
+              />
               <div className="about-founder-meta">
                 <span className="about-founder-name">
                   Dr. Rajiv Ratan Singh Yadav
@@ -230,19 +240,23 @@ const About = () => {
                 </span>
               </div>
               <blockquote className="about-founder-quote">
-                "At NEXUS Biomedical Research Foundation Trust, our focus is to
-                strengthen evidence-based practice in clinical and emergency
-                medicine through high-quality research and academic
-                collaboration. The Trust promotes excellence across clinical
-                medicine, emergency care, forensic science, toxicology, and
-                public health. We aim to create a robust platform for
-                interdisciplinary research that translates into improved patient
-                care and healthcare outcomes."
+                “At NEXUS Biomedical Research Foundation Trust, we are committed
+                to advancing excellence across the full spectrum of biomedical,
+                clinical, and allied health sciences through evidence-based
+                research and academic leadership. Our vision is to foster a
+                truly interdisciplinary ecosystem that seamlessly integrates
+                medical, surgical, diagnostic, and public health domains,
+                ensuring that scientific knowledge is translated into meaningful
+                improvements in patient care and healthcare systems.”
               </blockquote>
             </div>
 
             <div className="about-founder-card">
-              <div className="about-founder-diamond">🔷</div>
+              <img
+                src="/src/assets/Committee/secretary.jpeg"
+                alt="Dr. Pradeep Kumar Yadav"
+                className="about-founder-dp"
+              />
               <div className="about-founder-meta">
                 <span className="about-founder-name">
                   Dr. Pradeep Kumar Yadav
@@ -253,18 +267,23 @@ const About = () => {
                 </span>
               </div>
               <blockquote className="about-founder-quote">
-                "The Trust is committed to advancing forensic medicine and
-                toxicology through scientific rigor and ethical research
-                practices. By fostering academic publishing and collaborative
-                research, we strive to enhance medico-legal understanding and
-                contribute to justice and public health systems. NEXUS serves as
-                a platform for integrating forensic science with broader
-                biomedical research."
+                “NEXUS Biomedical Research Foundation Trust upholds the
+                principles of scientific rigor, ethical integrity, and
+                collaborative excellence across all domains of medical and
+                allied sciences. Through the promotion of research, academic
+                dissemination, and interdisciplinary integration, we strive to
+                strengthen healthcare delivery, medico-legal frameworks, and
+                public health systems, contributing to a more informed and
+                equitable society.”
               </blockquote>
             </div>
 
             <div className="about-founder-card">
-              <div className="about-founder-diamond">🔷</div>
+              <img
+                src="/src/assets/Committee/treasurer.jpeg"
+                alt="Sachin Kumar Tripathi"
+                className="about-founder-dp"
+              />
               <div className="about-founder-meta">
                 <span className="about-founder-name">
                   Sachin Kumar Tripathi
@@ -275,13 +294,17 @@ const About = () => {
                 </span>
               </div>
               <blockquote className="about-founder-quote">
-                "NEXUS Biomedical Research Foundation Trust supports innovation
-                and analytical excellence in toxicology and biomedical sciences.
-                Through structured research, academic dissemination, and
-                interdisciplinary collaboration, the Trust aims to generate
-                impactful scientific knowledge. Our goal is to contribute
-                meaningfully to healthcare advancement and global scientific
-                progress."
+                “At NEXUS Biomedical Research Foundation Trust, we are committed
+                to advancing excellence across the continuum of biomedical and
+                health sciences through innovation, analytical precision, and
+                interdisciplinary collaboration. With a strong focus on clinical
+                and analytical toxicology, alongside broader medical,
+                diagnostic, and research domains, we aim to promote high-quality
+                scientific inquiry and evidence-based practice. Through
+                structured research initiatives, capacity building, and
+                knowledge dissemination, we strive to strengthen healthcare
+                systems, enhance patient safety, and contribute meaningfully to
+                global scientific and healthcare advancement.”
               </blockquote>
             </div>
           </div>
@@ -332,8 +355,14 @@ const About = () => {
                     <td>Indian Trust Act and applicable state regulations</td>
                   </tr>
                   <tr>
-                    <td className="about-legal-label">Registration Authority</td>
+                    <td className="about-legal-label">
+                      Registration Authority
+                    </td>
                     <td>Office of the Sub-Registrar, Lucknow, Uttar Pradesh</td>
+                  </tr>
+                  <tr>
+                    <td className="about-legal-label">Darpan ID</td>
+                    <td>UP/2026/1050471</td>
                   </tr>
                 </tbody>
               </table>
@@ -342,9 +371,9 @@ const About = () => {
             <div className="about-legal-block">
               <h3 className="about-legal-heading">Registered Office</h3>
               <p className="about-legal-address">
-                151, Sector-2,<br />
-                Gomti Nagar Extension,<br />
-                Lucknow, Uttar Pradesh, India
+                Office Add- 151, Sector- J Pocket-2, Sushant Golf City,Lucknow,
+                <br />
+                PO: Sushant Golf City, DIST: Lucknow, Uttar Pradesh, 226030
               </p>
             </div>
 
@@ -365,10 +394,21 @@ const About = () => {
                 Legal Nature &amp; Governance
               </h3>
               <ul className="about-legal-list">
-                <li>The Trust is a non-profit, non-governmental organization.</li>
-                <li>It is governed by a Board of Trustees as defined in the Trust Deed.</li>
-                <li>The Managing/Founder Trustee holds executive authority as per deed provisions.</li>
-                <li>The Trust operates under principles of transparency, accountability, and ethical governance.</li>
+                <li>
+                  The Trust is a non-profit, non-governmental organization.
+                </li>
+                <li>
+                  It is governed by a Board of Trustees as defined in the Trust
+                  Deed.
+                </li>
+                <li>
+                  The Managing/Founder Trustee holds executive authority as per
+                  deed provisions.
+                </li>
+                <li>
+                  The Trust operates under principles of transparency,
+                  accountability, and ethical governance.
+                </li>
               </ul>
             </div>
 
@@ -376,14 +416,26 @@ const About = () => {
               <h3 className="about-legal-heading">
                 Objectives as per Registration
               </h3>
-              <p>As per the registered Trust Deed, the organization is established for:</p>
+              <p>
+                As per the registered Trust Deed, the organization is
+                established for:
+              </p>
               <ul className="about-legal-list">
                 <li>Promotion of scientific and biomedical research.</li>
-                <li>Advancement of forensic medicine, toxicology, and healthcare sciences.</li>
-                <li>Establishment of research laboratories and academic platforms.</li>
-                <li>Conduct of educational programs, workshops, and conferences.</li>
-                <li>Publication of scientific journals and research materials.</li>
-                <li>Support for social welfare, education, and public health initiatives.</li>
+                <li>Advancement and healthcare sciences globally.</li>
+                <li>
+                  Establishment of research laboratories and academic platforms.
+                </li>
+                <li>
+                  Conduct of educational programs, workshops, and conferences.
+                </li>
+                <li>
+                  Publication of scientific journals and research materials.
+                </li>
+                <li>
+                  Support for social welfare, education, and public health
+                  initiatives.
+                </li>
               </ul>
             </div>
 
@@ -392,9 +444,19 @@ const About = () => {
                 Financial &amp; Legal Compliance
               </h3>
               <ul className="about-legal-list">
-                <li>The Trust operates through legally maintained funds and accounts.</li>
-                <li>It is authorized to receive donations, grants, CSR funding, and institutional support.</li>
-                <li>All financial activities are conducted in accordance with applicable laws and are subject to proper accounting and audit procedures.</li>
+                <li>
+                  The Trust operates through legally maintained funds and
+                  accounts.
+                </li>
+                <li>
+                  It is authorized to receive donations, grants, CSR funding,
+                  and institutional support.
+                </li>
+                <li>
+                  All financial activities are conducted in accordance with
+                  applicable laws and are subject to proper accounting and audit
+                  procedures.
+                </li>
               </ul>
             </div>
 
@@ -427,10 +489,6 @@ const About = () => {
             </div>
           </div>
         </section>
-
-        
-       
-
       </div>
     </div>
   );

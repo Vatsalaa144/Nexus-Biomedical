@@ -3,34 +3,49 @@ import "./JairamJournal.css";
 
 const scopeAreas = [
   {
-    icon: "🚨",
-    title: "Emergency Medicine",
-    desc: "Acute care, trauma, critical interventions, and pre-hospital medicine.",
+    icon: "🩺",
+    title: "Emergency & Acute Care",
+    desc: "Acute care, trauma care, critical interventions, and pre-hospital emergency systems.",
   },
   {
     icon: "🧬",
-    title: "Clinical Sciences",
-    desc: "Internal medicine, diagnostics, therapeutics, and clinical trials.",
+    title: "Clinical & Medical Sciences",
+    desc: "All clinical specialties, diagnostics, therapeutics, and evidence-based clinical research.",
   },
   {
-    icon: "🔬",
-    title: "Forensic Medicine",
-    desc: "Medico-legal investigations, toxicology, and forensic pathology.",
+    icon: "⚕️",
+    title: "Surgery & Allied Specialties",
+    desc: "General surgery, super-specialties, perioperative care, and surgical innovations.",
+  },
+  {
+    icon: "⚖️",
+    title: "Forensic Medicine ",
+    desc: "Medico-legal investigations, forensic pathology, toxicology, and legal aspects of healthcare.",
   },
   {
     icon: "💊",
     title: "Pharmacology & Toxicology",
-    desc: "Drug studies, poison management, and adverse effect research.",
+    desc: "Drug research, clinical pharmacology, poison management, and adverse effect studies.",
   },
   {
-    icon: "🏥",
-    title: "Public Health",
-    desc: "Epidemiology, health policy, preventive medicine, and community health.",
+    icon: "🌍",
+    title: "Public Health & Epidemiology",
+    desc: "Population health, disease prevention, health policy, and epidemiological research.",
+  },
+  {
+    icon: "🔬",
+    title: " Biomedical & Laboratory Sciences",
+    desc: "Pathology, microbiology, molecular biology, genetics, and translational research.",
   },
   {
     icon: "🤖",
-    title: "AI in Healthcare",
-    desc: "Machine learning applications in diagnostics and medico-legal systems.",
+    title: "AI & Digital Health",
+    desc: "Artificial intelligence, health informatics, digital diagnostics, and smart healthcare systems.",
+  },
+  {
+    icon: "🚑 ",
+    title: "Critical Care & Anesthesiology",
+    desc: "Intensive care, pain management, life-support systems, and perioperative medicine.",
   },
 ];
 
@@ -46,12 +61,15 @@ const JairamJournal = () => {
     <div className="journal-page-container">
       {/* Banner */}
       <div className="journal-page-title">
-        <div className="journal-banner-badge">Official Publication — NEXUS Trust</div>
+        <div className="journal-banner-badge">
+          Official Publication — NEXUS Trust
+        </div>
         <h1>Journal of Advanced &amp; Integrated Research in Acute Medicine</h1>
-       
+
         <p>
           A peer-reviewed, open-access platform publishing high-quality research
-          in emergency medicine, clinical sciences, and interdisciplinary healthcare.
+          in emergency medicine, clinical sciences, and interdisciplinary
+          healthcare.
         </p>
       </div>
 
@@ -62,13 +80,13 @@ const JairamJournal = () => {
           <div className="journal-about-text">
             <h2>About JAIRAM</h2>
             <p>
-              JAIRAM is the official journal of NEXUS Biomedical Research Foundation
-              Trust, dedicated to advancing knowledge in acute and emergency medicine.
-              It provides a rigorous academic platform for clinicians, researchers,
-              and forensic scientists to publish impactful, evidence-based research
-              that improves patient care and strengthens medico-legal systems.
+              JAIRAM is the official journal of NEXUS Biomedical Research
+              Foundation Trust, dedicated to advancing knowledge in acute and
+              emergency medicine. It provides a rigorous academic platform for
+              clinicians, researchers, and forensic scientists to publish
+              impactful, evidence-based research that improves patient care and
+              strengthens medico-legal systems.
             </p>
-           
           </div>
         </div>
 
@@ -105,7 +123,9 @@ const JairamJournal = () => {
               <li>Original research articles, reviews, and case reports</li>
               <li>Manuscripts submitted in English (APA / Vancouver style)</li>
               <li>Strict double-blind peer review process</li>
-              <li>Ethical clearance certificate required for clinical studies</li>
+              <li>
+                Ethical clearance certificate required for clinical studies
+              </li>
               <li>Plagiarism check mandatory — below 15% similarity</li>
             </ul>
           </div>
