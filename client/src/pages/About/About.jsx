@@ -17,6 +17,9 @@ import {
   FaFlask,
 } from "react-icons/fa";
 import "./About.css";
+import presidentImg from "../../assets/Committee/president.jpeg";
+import secretaryImg from "../../assets/Committee/secretary.jpeg";
+import treasurerImg from "../../assets/Committee/treasurer.jpeg";
 
 const About = () => {
   const officioMembers = [
@@ -226,7 +229,7 @@ const About = () => {
           <div className="about-founders-grid">
             <div className="about-founder-card">
               <img
-                src="/src/assets/Committee/president.jpeg"
+                src={presidentImg}
                 alt="Dr. Rajiv Ratan Singh Yadav"
                 className="about-founder-dp"
               />
@@ -252,11 +255,7 @@ const About = () => {
             </div>
 
             <div className="about-founder-card">
-              <img
-                src="/src/assets/Committee/secretary.jpeg"
-                alt="Dr. Pradeep Kumar Yadav"
-                className="about-founder-dp"
-              />
+              <img src={secretaryImg} alt="Dr. Pradeep Kumar Yadav" className="about-founder-dp" />
               <div className="about-founder-meta">
                 <span className="about-founder-name">
                   Dr. Pradeep Kumar Yadav
@@ -280,7 +279,7 @@ const About = () => {
 
             <div className="about-founder-card">
               <img
-                src="/src/assets/Committee/treasurer.jpeg"
+                src={treasurerImg}
                 alt="Sachin Kumar Tripathi"
                 className="about-founder-dp"
               />
