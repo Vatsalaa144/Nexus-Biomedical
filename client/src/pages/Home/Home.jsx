@@ -124,7 +124,7 @@ const Home = () => {
                 </h3>
 
                 <div className="home-date-highlight">
-                  <div className="home-date-main">25th December 2025</div>
+                  <div className="home-date-main">CComing Soon</div>
                 </div>
 
                 {/* <div className="home-event-status">
