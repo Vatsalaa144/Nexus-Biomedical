@@ -2,9 +2,9 @@
 
 A full-stack web platform for the Nexus Biomedical Research Foundation Trust. The project provides a public-facing organizational website, membership application system, contact enquiry flow, research and resource pages, blog content, committee details, media updates, and an email-driven backend workflow for membership administration.
 
-> Live Site: `<add-live-url-here>`<br>
-> Repository: `<add-github-repository-url-here>`<br>
-> Maintainer: `<add-maintainer-name-here>`
+> Live Site: `https://www.nbrft.org`<br>
+> Repository: `https://github.com/Vatsalaa144/Nexus-Biomedical`<br>
+> Maintainer: `https://github.com/Vatsalaa144`
 
 ---
 
@@ -496,14 +496,14 @@ Production notes:
 ## Contact
 
 Organization: Nexus Biomedical Research Foundation Trust<br>
-Website: `<add-website-url-here>`<br>
-Email: `<add-public-contact-email-here>`<br>
-Phone: `<add-phone-number-here>`<br>
-Address: `<add-office-address-here>`
+Website: `https://www.nbrft.org`<br>
+Email: `nexusbiomedicalresearch@gmail.com`<br>
+Phone: `8881778519`<br>
+Address: `Office Add- 151, Sector- J Pocket-2, Sushant Golf City,Lucknow, PO: Sushant Golf City, DIST: Lucknow, Uttar Pradesh, 226030`
 
-Project Maintainer: `<add-maintainer-name-here>`<br>
-GitHub: `<add-github-profile-or-repo-url-here>`<br>
-LinkedIn: `<add-linkedin-url-here>`
+Project Maintainer: `https://github.com/Vatsalaa144`<br>
+GitHub: `https://github.com/Vatsalaa144/Nexus-Biomedical`<br>
+LinkedIn: `https://www.linkedin.com/in/jairam-journal-5a8174404`
 
 ---
 
