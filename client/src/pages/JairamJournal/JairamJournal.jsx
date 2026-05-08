@@ -149,7 +149,7 @@ const JairamJournal = () => {
             medicine, forensic sciences, and biomedical research.
           </p>
           <a
-            href="https://jai-ram.vercel.app/"
+            href="https://www.jairam.org/"
             target="_blank"
             rel="noopener noreferrer"
             className="journal-cta-btn"
